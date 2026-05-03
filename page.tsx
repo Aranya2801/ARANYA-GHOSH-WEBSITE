@@ -1,258 +1,171 @@
-'use client'
-import Link from 'next/link'
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
+import { SectionLabel, SectionHeading, Tag, ResearchBadge } from '@/components/ui'
+import { FadeUp, StaggerList, StaggerItem, PageTransition } from '@/components/ui/motion'
+import { RESEARCH_WORKS, INTERESTS } from '@/lib/data'
 
-const WORLDS = [
-  {
-    href: '/diary',
-    icon: '📔',
-    title: 'My Diary',
-    subtitle: 'The human behind the engineer',
-    desc: 'Life chapters · Memories · Music · Cinema · Daily vlogs',
-    accent: '#f5c842',
-    glow: 'rgba(245,200,66,0.15)',
-    border: 'hover:border-diary-gold',
-    textAccent: 'text-diary-gold',
-    bgGlow: 'rgba(245,200,66,0.06)',
-  },
-  {
-    href: '/professional',
-    icon: '💼',
-    title: 'Professional',
-    subtitle: 'The engineer building the future',
-    desc: 'Resume · Projects · Skills · GitHub Stats · Certifications',
-    accent: '#38d9f5',
-    glow: 'rgba(56,217,245,0.15)',
-    border: 'hover:border-pro-cyan',
-    textAccent: 'text-pro-cyan',
-    bgGlow: 'rgba(56,217,245,0.06)',
-  },
-  {
-    href: '/research',
-    icon: '🔬',
-    title: 'Research',
-    subtitle: 'The scientist at the frontier',
-    desc: 'Publications · IIT-KGP · IIIT-N · PhD Journey',
-    accent: '#9b6dff',
-    glow: 'rgba(155,109,255,0.15)',
-    border: 'hover:border-research-violet',
-    textAccent: 'text-research-violet',
-    bgGlow: 'rgba(155,109,255,0.06)',
-  },
-  {
-    href: '/blog',
-    icon: '✍️',
-    title: 'Blog',
-    subtitle: 'Thoughts on AI & research',
-    desc: 'Deep dives · ML insights · Research notes · Tutorials',
-    accent: '#39e5a0',
-    glow: 'rgba(57,229,160,0.15)',
-    border: 'hover:border-research-green',
-    textAccent: 'text-research-green',
-    bgGlow: 'rgba(57,229,160,0.06)',
-  },
-]
-
-const STATS = [
-  { value: 'AIR 3', label: 'GATE 2026 DS & AI' },
-  { value: '9.22', label: 'BTech CGPA' },
-  { value: '1', label: 'Published Paper' },
-  { value: 'Fall \'26', label: 'MS @ Rutgers' },
-]
-
-// Particle canvas
-function ParticleField() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-    let animId: number
-    const particles: { x: number; y: number; vx: number; vy: number; size: number; opacity: number; color: string }[] = []
-    const COLORS = ['#39e5a0', '#9b6dff', '#f5c842', '#38d9f5']
-
-    function resize() {
-      canvas!.width = window.innerWidth
-      canvas!.height = window.innerHeight
-    }
-    resize()
-    window.addEventListener('resize', resize)
-
-    for (let i = 0; i < 60; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        size: Math.random() * 1.5 + 0.5,
-        opacity: Math.random() * 0.4 + 0.1,
-        color: COLORS[Math.floor(Math.random() * COLORS.length)],
-      })
-    }
-
-    function draw() {
-      ctx!.clearRect(0, 0, canvas!.width, canvas!.height)
-      particles.forEach((p, i) => {
-        p.x += p.vx; p.y += p.vy
-        if (p.x < 0) p.x = canvas!.width
-        if (p.x > canvas!.width) p.x = 0
-        if (p.y < 0) p.y = canvas!.height
-        if (p.y > canvas!.height) p.y = 0
-        ctx!.beginPath()
-        ctx!.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-        ctx!.fillStyle = p.color + Math.floor(p.opacity * 255).toString(16).padStart(2, '0')
-        ctx!.fill()
-        // Connect nearby particles
-        particles.slice(i + 1).forEach(p2 => {
-          const dist = Math.hypot(p.x - p2.x, p.y - p2.y)
-          if (dist < 120) {
-            ctx!.beginPath()
-            ctx!.moveTo(p.x, p.y); ctx!.lineTo(p2.x, p2.y)
-            ctx!.strokeStyle = `rgba(255,255,255,${0.04 * (1 - dist / 120)})`
-            ctx!.lineWidth = 0.5; ctx!.stroke()
-          }
-        })
-      })
-      animId = requestAnimationFrame(draw)
-    }
-    draw()
-    return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', resize) }
-  }, [])
-  return <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" />
-}
-
-// Magnetic world card
-function WorldCard({ world, index }: { world: typeof WORLDS[0]; index: number }) {
-  const cardRef = useRef<HTMLDivElement>(null)
-  const x = useMotionValue(0); const y = useMotionValue(0)
-  const rotateX = useSpring(useTransform(y, [-60, 60], [8, -8]), { stiffness: 200, damping: 20 })
-  const rotateY = useSpring(useTransform(x, [-60, 60], [-8, 8]), { stiffness: 200, damping: 20 })
-
-  function onMouseMove(e: React.MouseEvent) {
-    const rect = cardRef.current?.getBoundingClientRect()
-    if (!rect) return
-    x.set(e.clientX - rect.left - rect.width / 2)
-    y.set(e.clientY - rect.top - rect.height / 2)
-  }
-  function onMouseLeave() { x.set(0); y.set(0) }
-
+export default function ResearchPage() {
   return (
-    <motion.div
-      ref={cardRef}
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.4 + index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-      style={{ rotateX, rotateY, transformStyle: 'preserve-3d', perspective: 1000 }}
-      onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
-    >
-      <Link
-        href={world.href}
-        className={`group relative flex flex-col text-left p-6 w-52 border border-white/10 bg-bg-2 overflow-hidden block transition-all duration-300 ${world.border}`}
-      >
-        {/* Hover glow */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none"
-          style={{ background: `radial-gradient(circle at 30% 30%, ${world.glow}, transparent 70%)` }} />
-        {/* Top accent */}
-        <div className="absolute top-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          style={{ background: `linear-gradient(90deg, transparent, ${world.accent}, transparent)` }} />
+    <PageTransition>
+      {/* Hero */}
+      <section className="relative px-6 md:px-12 py-20 border-b border-white/7 overflow-hidden">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(155,109,255,0.08) 0%, transparent 70%)' }} />
+        <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(57,229,160,0.05) 0%, transparent 70%)' }} />
+        <FadeUp>
+          <h1 className="font-serif text-[clamp(2.5rem,7vw,5.5rem)] font-black leading-[0.9] text-white mb-3">
+            Research<br /><span className="text-gradient-research">Universe</span>
+          </h1>
+          <p className="font-mono text-xs text-text-muted tracking-wider">
+            AI · ML · Deep Learning · Signal Processing · Medical AI · Autonomous Systems
+          </p>
+        </FadeUp>
+      </section>
 
-        <span className="text-3xl mb-4 relative z-10" style={{ transform: 'translateZ(20px)' }}>{world.icon}</span>
-        <span className={`font-serif text-lg font-bold text-white mb-0.5 relative z-10 ${world.textAccent} group-hover:text-white transition-colors`}
-          style={{ transform: 'translateZ(15px)' }}>
-          {world.title}
-        </span>
-        <span className="text-[10px] font-mono tracking-widest mb-2 relative z-10"
-          style={{ color: world.accent, transform: 'translateZ(12px)' }}>
-          {world.subtitle}
-        </span>
-        <span className="text-[11px] text-text-muted leading-relaxed relative z-10" style={{ transform: 'translateZ(10px)' }}>
-          {world.desc}
-        </span>
+      <div className="px-6 md:px-12 py-12 space-y-16">
 
-        {/* Arrow */}
-        <motion.span
-          className="absolute bottom-4 right-4 font-mono text-[11px] opacity-0 group-hover:opacity-100 transition-opacity"
-          style={{ color: world.accent }}
-        >
-          enter →
-        </motion.span>
-      </Link>
-    </motion.div>
-  )
-}
-
-export default function HomePage() {
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
-
-  return (
-    <main className="min-h-screen flex flex-col items-center justify-center text-center px-4 relative overflow-hidden bg-grid-subtle">
-      {/* Particle field */}
-      {mounted && <ParticleField />}
-
-      {/* Multi-world ambient glows */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(155,109,255,0.05) 0%, transparent 60%)' }} />
-        <div className="absolute bottom-0 right-0 w-96 h-96"
-          style={{ background: 'radial-gradient(circle, rgba(245,200,66,0.04) 0%, transparent 60%)' }} />
-        <div className="absolute top-0 left-0 w-96 h-96"
-          style={{ background: 'radial-gradient(circle, rgba(56,217,245,0.04) 0%, transparent 60%)' }} />
-      </div>
-
-      {/* Status */}
-      <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-        className="inline-flex items-center gap-2 border border-white/13 font-mono text-[11px] text-text-muted tracking-widest uppercase px-4 py-1.5 mb-10 z-10">
-        <span className="w-1.5 h-1.5 rounded-full bg-research-green animate-pulse-slow" />
-        aranyaghosh.org · v2.0 · live
-      </motion.div>
-
-      {/* Name */}
-      <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-        className="font-serif text-[clamp(4rem,14vw,10rem)] font-black leading-[0.88] tracking-tight text-white mb-4 z-10 relative">
-        <em className="text-gradient-diary italic">Aranya</em>
-        <br />
-        <span className="text-white">Ghosh</span>
-      </motion.h1>
-
-      {/* Role */}
-      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3, duration: 0.5 }}
-        className="font-sans text-text-muted text-base font-light tracking-[0.15em] mb-2 z-10 uppercase">
-        AI Researcher · Engineer · PhD Aspirant
-      </motion.p>
-
-      {/* GATE badge */}
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4, duration: 0.5 }}
-        className="flex items-center gap-2 font-mono text-[11px] tracking-wider mb-12 z-10">
-        <span className="text-diary-gold font-bold">GATE 2026 AIR 3</span>
-        <span className="text-white/20">·</span>
-        <span className="text-text-muted">DS & AI</span>
-        <span className="text-white/20">|</span>
-        <span className="text-text-muted">MS-MITA @ Rutgers</span>
-        <span className="text-white/20">|</span>
-        <span className="text-research-green">Published Researcher</span>
-      </motion.div>
-
-      {/* World cards — 3D magnetic */}
-      <div className="flex gap-3 flex-wrap justify-center mb-14 z-10" style={{ perspective: 1200 }}>
-        {WORLDS.map((w, i) => <WorldCard key={w.href} world={w} index={i} />)}
-      </div>
-
-      {/* Stats strip */}
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7, duration: 0.5 }}
-        className="flex gap-px bg-white/7 border border-white/7 z-10">
-        {STATS.map((s) => (
-          <div key={s.label} className="bg-bg-2 px-6 py-3 text-center">
-            <div className="font-serif text-xl font-black text-white">{s.value}</div>
-            <div className="font-mono text-[9px] text-text-muted tracking-widest uppercase mt-0.5">{s.label}</div>
+        {/* PhD Vision */}
+        <FadeUp delay={0.05}>
+          <SectionLabel color="research">vision</SectionLabel>
+          <SectionHeading>PhD Journey & Long-Term Goal</SectionHeading>
+          <div className="relative bg-bg-2 border border-white/7 p-8 overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none"
+              style={{ background: 'radial-gradient(ellipse at top left, rgba(155,109,255,0.08), transparent 60%)' }} />
+            <p className="text-sm text-text-muted leading-[1.9] relative z-10 max-w-3xl">
+              My long-term goal is to pursue a{' '}
+              <strong className="text-research-lavender">PhD in Computer Science / Artificial Intelligence / Data Science</strong>.
+              Every research decision I've made — from choosing internships at IIT-KGP and IIIT Nagpur to
+              preparing for GATE — has been a deliberate step toward this destination. At Rutgers, I plan
+              to engage deeply with faculty research groups, pursue RA/TA positions, and build the research
+              record required for a top-tier PhD program.
+            </p>
+            <p className="text-sm text-text-muted leading-[1.9] relative z-10 max-w-3xl mt-4">
+              My core belief:{' '}
+              <strong className="text-research-lavender">AI is the most transformative technology of our time</strong>,
+              and I want to be at its frontier — not just as a user, but as a builder and discoverer.
+              I am actively seeking{' '}
+              <strong className="text-research-green">research collaborations, RA/TA opportunities</strong>, and
+              PhD program mentors in AI/ML/Data Science.
+            </p>
           </div>
-        ))}
-      </motion.div>
-    </main>
+        </FadeUp>
+
+        {/* GATE Milestone */}
+        <FadeUp delay={0.08}>
+          <SectionLabel color="research">milestone</SectionLabel>
+          <SectionHeading>GATE 2026</SectionHeading>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/7 border border-white/7">
+            <div className="bg-bg-2 p-8">
+              <div className="font-mono text-[10px] text-research-violet tracking-widest uppercase mb-2">
+                // Data Science & AI
+              </div>
+              <div className="font-serif text-7xl font-black text-diary-gold leading-none mb-2">AIR 3</div>
+              <div className="font-mono text-xs text-text-muted leading-relaxed">
+                Score: 81.33 / 100 (998 normalised)<br />
+                Top 0.01% &nbsp;·&nbsp; 100,000+ candidates
+              </div>
+            </div>
+            <div className="bg-bg-2 p-8">
+              <div className="font-mono text-[10px] text-research-violet tracking-widest uppercase mb-2">
+                // CS & IT
+              </div>
+              <div className="font-serif text-7xl font-black text-research-lavender leading-none mb-2">AIR 147</div>
+              <div className="font-mono text-xs text-text-muted leading-relaxed">
+                Score: 73.89 / 100 (863 normalised)<br />
+                Top 0.1% nationally
+              </div>
+            </div>
+          </div>
+        </FadeUp>
+
+        {/* Research Experience */}
+        <FadeUp delay={0.1}>
+          <SectionLabel color="research">research experience</SectionLabel>
+          <SectionHeading>Internships & Research Work</SectionHeading>
+          <StaggerList className="flex flex-col gap-px bg-white/7 border border-white/7">
+            {RESEARCH_WORKS.map((r) => (
+              <StaggerItem key={r.id}>
+                <div className={`bg-bg-2 hover:bg-bg-3 transition-colors p-6
+                                 border-l-3 border-l-transparent hover-accent-research
+                                 ${r.type === 'published' ? 'border-l-research-green' :
+                                   r.type === 'conference' ? 'border-l-research-violet' :
+                                   'border-l-diary-gold'}`}>
+                  <ResearchBadge type={r.type}>{r.badge}</ResearchBadge>
+                  <h4 className="font-serif text-xl font-bold text-white mb-1 leading-snug">{r.title}</h4>
+                  <div className="font-mono text-xs text-research-lavender mb-3">
+                    {r.institution} · {r.period}
+                  </div>
+                  <p className="text-sm text-text-muted leading-relaxed mb-4">{r.description}</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {r.tools.map(t => <Tag key={t} color="research">{t}</Tag>)}
+                  </div>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerList>
+        </FadeUp>
+
+        {/* Research Interests */}
+        <FadeUp delay={0.1}>
+          <SectionLabel color="research">interests</SectionLabel>
+          <SectionHeading>Research Interests</SectionHeading>
+          <StaggerList className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/7 border border-white/7">
+            {INTERESTS.map((item) => (
+              <StaggerItem key={item.title}>
+                <div className="bg-bg-2 hover:bg-bg-3 transition-colors p-5
+                                border-b-2 border-b-transparent hover:border-b-research-violet group">
+                  <span className="text-2xl block mb-2">{item.icon}</span>
+                  <div className="text-sm text-text-DEFAULT font-medium mb-1
+                                  group-hover:text-research-lavender transition-colors">
+                    {item.title}
+                  </div>
+                  <div className="text-xs text-text-muted leading-relaxed">{item.sub}</div>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerList>
+        </FadeUp>
+
+        {/* Connect */}
+        <FadeUp delay={0.1}>
+          <SectionLabel color="research">collaborate</SectionLabel>
+          <SectionHeading>Research Connections</SectionHeading>
+          <div className="bg-bg-2 border border-white/7 p-8">
+            <p className="text-sm text-text-muted leading-[1.9] mb-6 max-w-2xl">
+              I am actively seeking{' '}
+              <strong className="text-research-lavender">research collaborations, RA/TA opportunities</strong>, and
+              PhD program mentors in AI/ML/Data Science. Open to connecting with faculty, researchers, and
+              professionals working at the frontier of intelligent systems.
+            </p>
+            <div className="flex gap-3 flex-wrap">
+              <a href="https://linkedin.com" target="_blank"
+                 className="inline-flex items-center gap-2 font-mono text-[12px] text-research-green
+                            border border-research-green bg-research-green/7 px-4 py-2
+                            hover:bg-research-green/15 transition-colors">
+                → Connect on LinkedIn
+              </a>
+              <a href="mailto:aranya@example.com"
+                 className="inline-flex items-center gap-2 font-mono text-[12px] text-text-muted
+                            border border-white/13 px-4 py-2
+                            hover:border-research-violet hover:text-research-lavender transition-colors">
+                → Email me
+              </a>
+              <a href="https://github.com" target="_blank"
+                 className="inline-flex items-center gap-2 font-mono text-[12px] text-text-muted
+                            border border-white/13 px-4 py-2
+                            hover:border-white/30 hover:text-white transition-colors">
+                → GitHub
+              </a>
+            </div>
+          </div>
+        </FadeUp>
+
+      </div>
+
+      <footer className="border-t border-white/7 px-6 md:px-12 py-5 flex justify-between items-center
+                         font-mono text-[11px] text-text-muted">
+        <span>aranyaghosh.org — 🔬 Research</span>
+        <span className="text-research-violet">PhD aspirant · AI frontier</span>
+      </footer>
+    </PageTransition>
   )
 }
