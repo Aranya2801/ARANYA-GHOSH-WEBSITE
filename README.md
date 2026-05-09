@@ -285,10 +285,10 @@ export const LIFE_CHAPTERS = [
 
 <div align="center">
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=06060a)](https://linkedin.com/in/aranya-ghosh)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=06060a)](www.linkedin.com/in/aranya-ghosh-754188207)
 [![GitHub](https://img.shields.io/badge/GitHub-Follow-white?style=for-the-badge&logo=github&labelColor=06060a)](https://github.com/Aranya2801)
-[![Email](https://img.shields.io/badge/Email-Contact-39e5a0?style=for-the-badge&logo=gmail&logoColor=white&labelColor=06060a)](mailto:aranya@aranyaghosh.org)
-[![Website](https://img.shields.io/badge/Website-Visit-f5c842?style=for-the-badge&logo=googlechrome&logoColor=black&labelColor=06060a)](https://aranyaghosh.org)
+[![Email](https://img.shields.io/badge/Email-Contact-39e5a0?style=for-the-badge&logo=gmail&logoColor=white&labelColor=06060a)](mailto:aranyaghoshriku2801@gmail.com)
+[![Website](https://img.shields.io/badge/Website-Visit-f5c842?style=for-the-badge&logo=googlechrome&logoColor=black&labelColor=06060a)](https://github.com/Aranya2801)
 
 </div>
 
