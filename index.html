@@ -1,0 +1,2392 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>GATE Notes — Aranya Ghosh | AIR 3 DA · AIR 147 CS</title>
+<meta name="description" content="Advanced GATE preparation notes by Aranya Ghosh (AIR 3 DA, AIR 147 CS). Mathematics, Algorithms, OS, DBMS, Networks, ML — rigorously structured."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Syne:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},startup:{typeset:false},options:{skipHtmlTags:['script','noscript','style','textarea','pre']}};</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+<style>
+/* ══════════════════════════════════════════
+   DESIGN TOKENS
+══════════════════════════════════════════ */
+:root {
+  /* Dark theme (default) */
+  --bg:      #0b0b0a;
+  --bg2:     #111110;
+  --bg3:     #181816;
+  --bg4:     #202020;
+  --border:  #262624;
+  --border2: #2e2d2b;
+  --text:    #e8e5de;
+  --text2:   #a09d96;
+  --text3:   #5c5a55;
+  --text4:   #3a3835;
+
+  --amber:   #d4a94a;
+  --amber2:  #f0c060;
+  --amber-dim:#8a6820;
+  --teal:    #3ab8a0;
+  --teal-dim:#1f6054;
+  --ruby:    #c44c3c;
+  --indigo:  #5870d8;
+  --indigo-dim:#2e3d8a;
+  --violet:  #9060c8;
+
+  --glow-amber: 0 0 40px rgba(212,169,74,0.12);
+  --glow-teal:  0 0 40px rgba(58,184,160,0.1);
+
+  --shadow:    0 1px 3px rgba(0,0,0,.4), 0 4px 16px rgba(0,0,0,.3);
+  --shadow-lg: 0 4px 12px rgba(0,0,0,.5), 0 20px 60px rgba(0,0,0,.4);
+
+  --radius: 8px;
+  --radius-sm: 4px;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-ui: 'Syne', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --nav-h: 60px;
+  --sidebar-w: 260px;
+}
+
+[data-theme="light"] {
+  --bg:      #faf9f6;
+  --bg2:     #f3f2ef;
+  --bg3:     #eae9e5;
+  --bg4:     #e0deda;
+  --border:  #dddad4;
+  --border2: #d0cec8;
+  --text:    #18171a;
+  --text2:   #524f4a;
+  --text3:   #8a8780;
+  --text4:   #b8b5ae;
+
+  --amber:   #8a6020;
+  --amber2:  #c09030;
+  --amber-dim:#f0e0c0;
+  --teal:    #1a8070;
+  --teal-dim:#c8f0ea;
+  --ruby:    #9a2828;
+  --indigo:  #3050b8;
+  --indigo-dim:#dde4f8;
+  --violet:  #6040a8;
+
+  --glow-amber: 0 0 0 transparent;
+  --glow-teal:  0 0 0 transparent;
+  --shadow:    0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
+  --shadow-lg: 0 4px 12px rgba(0,0,0,.1), 0 20px 60px rgba(0,0,0,.08);
+}
+
+/* ══════════════════════════════════════════
+   BASE
+══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{
+  font-family:var(--font-ui);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.65;
+  min-height:100vh;
+  transition:background .3s,color .3s;
+  overflow-x:hidden;
+}
+a{color:var(--amber);text-decoration:none;transition:color .15s}
+a:hover{color:var(--amber2)}
+img{max-width:100%}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+::selection{background:rgba(212,169,74,.25);color:var(--text)}
+
+/* ══════════════════════════════════════════
+   GRAIN OVERLAY
+══════════════════════════════════════════ */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:.4;
+}
+
+/* ══════════════════════════════════════════
+   NAV
+══════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:var(--nav-h);
+  background:rgba(11,11,10,.85);
+  backdrop-filter:blur(20px) saturate(160%);
+  -webkit-backdrop-filter:blur(20px) saturate(160%);
+  border-bottom:1px solid var(--border);
+}
+[data-theme="light"] nav{background:rgba(250,249,246,.9)}
+
+.nav-inner{
+  max-width:1400px;margin:0 auto;
+  height:var(--nav-h);
+  display:flex;align-items:center;
+  gap:0;padding:0 28px;
+}
+.nav-logo{
+  font-family:var(--font-display);
+  font-size:1.1rem;font-weight:400;
+  color:var(--text);
+  letter-spacing:-.01em;
+  white-space:nowrap;margin-right:40px;
+}
+.nav-logo em{font-style:italic;color:var(--amber)}
+.nav-links{display:flex;align-items:center;gap:2px;flex:1}
+.nav-links a{
+  font-size:.72rem;font-weight:600;
+  color:var(--text3);
+  padding:6px 14px;border-radius:var(--radius-sm);
+  letter-spacing:.08em;text-transform:uppercase;
+  transition:color .15s,background .15s;
+}
+.nav-links a:hover,.nav-links a.active{
+  color:var(--text);background:var(--bg3);
+}
+.nav-right{display:flex;align-items:center;gap:8px;margin-left:auto}
+
+/* Progress bar */
+.progress-bar{
+  position:fixed;top:var(--nav-h);left:0;height:2px;
+  background:linear-gradient(90deg,var(--amber),var(--amber2));
+  z-index:201;transition:width .1s;width:0%;
+}
+
+/* Theme toggle */
+#theme-btn{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--bg3);color:var(--text2);font-size:.95rem;
+  border:1px solid var(--border);
+  transition:background .15s,transform .2s;
+}
+#theme-btn:hover{background:var(--bg4);transform:rotate(20deg)}
+
+/* Search trigger */
+#search-trigger{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 14px;border-radius:var(--radius-sm);
+  background:var(--bg3);border:1px solid var(--border);
+  font-size:.78rem;color:var(--text3);
+  transition:border-color .15s,color .15s;
+}
+#search-trigger:hover{border-color:var(--amber-dim);color:var(--text2)}
+.search-kbd{
+  font-family:var(--font-mono);font-size:.65rem;
+  background:var(--bg4);border:1px solid var(--border2);
+  padding:2px 6px;border-radius:3px;color:var(--text3);
+}
+
+/* Hamburger */
+.hamburger{display:none;flex-direction:column;gap:5px;padding:8px}
+.hamburger span{display:block;width:20px;height:2px;background:var(--text3);border-radius:2px;transition:.25s}
+
+/* ══════════════════════════════════════════
+   SEARCH OVERLAY
+══════════════════════════════════════════ */
+.search-overlay{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(0,0,0,.7);backdrop-filter:blur(8px);
+  display:none;align-items:flex-start;justify-content:center;
+  padding-top:120px;
+}
+.search-overlay.open{display:flex}
+.search-modal{
+  width:100%;max-width:620px;
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:12px;overflow:hidden;box-shadow:var(--shadow-lg);
+  animation:slideDown .2s ease;
+}
+@keyframes slideDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:none}}
+.search-input-row{
+  display:flex;align-items:center;gap:12px;
+  padding:16px 20px;border-bottom:1px solid var(--border);
+}
+.search-input-row input{
+  flex:1;background:none;border:none;outline:none;
+  font-size:1rem;color:var(--text);font-family:var(--font-ui);
+}
+.search-input-row input::placeholder{color:var(--text3)}
+.search-results{max-height:360px;overflow-y:auto}
+.search-result-item{
+  padding:12px 20px;cursor:pointer;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;
+  transition:background .1s;
+}
+.search-result-item:hover{background:var(--bg3)}
+.search-result-item:last-child{border-bottom:none}
+.sri-icon{font-size:.9rem;flex-shrink:0;width:28px;text-align:center}
+.sri-name{font-size:.88rem;font-weight:500;color:var(--text)}
+.sri-sub{font-size:.74rem;color:var(--text3);margin-top:2px}
+.search-empty{padding:40px 20px;text-align:center;color:var(--text3);font-size:.88rem}
+
+/* ══════════════════════════════════════════
+   PAGE SYSTEM
+══════════════════════════════════════════ */
+.wrap{max-width:1300px;margin:0 auto;padding:0 28px}
+.page{display:none;min-height:100vh;padding-top:var(--nav-h)}
+.page.active{display:block;animation:pageIn .35s ease}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* ══════════════════════════════════════════
+   ── HOME PAGE
+══════════════════════════════════════════ */
+.hero{
+  padding:110px 0 80px;
+  position:relative;
+}
+.hero-bg-lines{
+  position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:-1;
+}
+.hero-bg-lines::before{
+  content:'';position:absolute;
+  width:600px;height:600px;
+  right:-100px;top:-100px;
+  background:radial-gradient(circle,rgba(212,169,74,.06) 0%,transparent 70%);
+  border-radius:50%;
+}
+.hero-bg-lines::after{
+  content:'';position:absolute;
+  width:400px;height:400px;
+  left:-50px;bottom:-50px;
+  background:radial-gradient(circle,rgba(58,184,160,.04) 0%,transparent 70%);
+  border-radius:50%;
+}
+
+.hero-eyebrow{
+  font-size:.7rem;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:28px;
+  display:flex;align-items:center;gap:10px;
+}
+.hero-eyebrow::before{content:'';display:inline-block;width:28px;height:1px;background:var(--amber)}
+
+.hero h1{
+  font-family:var(--font-display);
+  font-size:clamp(2.8rem,6vw,5rem);
+  font-weight:300;line-height:1.1;
+  color:var(--text);margin-bottom:32px;
+  letter-spacing:-.02em;
+}
+.hero h1 em{font-style:italic;color:var(--amber);font-weight:300}
+.hero h1 strong{font-weight:400;font-style:normal}
+
+.hero-sub{
+  font-size:1.05rem;color:var(--text2);
+  max-width:580px;line-height:1.85;margin-bottom:44px;
+  font-weight:400;
+}
+
+.rank-pills{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:40px}
+.rank-pill{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:8px 18px;border-radius:100px;
+  background:var(--bg2);
+  border:1px solid var(--border2);
+  font-size:.78rem;font-weight:500;color:var(--text2);
+  letter-spacing:.02em;
+}
+.rank-pill-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.rank-num{
+  font-family:var(--font-display);
+  font-size:1rem;font-weight:400;color:var(--text);
+}
+
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:80px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 26px;border-radius:var(--radius-sm);
+  font-size:.82rem;font-weight:600;
+  letter-spacing:.04em;text-transform:uppercase;
+  transition:all .2s;
+}
+.btn-primary{
+  background:var(--amber);color:#0b0b0a;
+}
+.btn-primary:hover{background:var(--amber2);color:#0b0b0a;transform:translateY(-1px);box-shadow:0 4px 20px rgba(212,169,74,.3)}
+.btn-secondary{
+  border:1px solid var(--border2);color:var(--text2);background:var(--bg2);
+}
+.btn-secondary:hover{border-color:var(--amber-dim);color:var(--text);background:var(--bg3)}
+
+/* Stats strip */
+.stats-strip{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;background:var(--bg2);
+}
+.stat-block{
+  padding:32px 20px;
+  border-right:1px solid var(--border);
+  transition:background .15s;
+}
+.stat-block:last-child{border-right:none}
+.stat-block:hover{background:var(--bg3)}
+.stat-num{
+  font-family:var(--font-display);
+  font-size:2.4rem;font-weight:300;line-height:1;
+  color:var(--text);margin-bottom:6px;letter-spacing:-.02em;
+}
+.stat-num span{font-size:1.4rem;color:var(--amber)}
+.stat-label{font-size:.7rem;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase}
+
+/* Home subjects grid */
+.home-section{padding:80px 0}
+.home-section-header{
+  display:flex;align-items:baseline;justify-content:space-between;
+  margin-bottom:40px;gap:16px;flex-wrap:wrap;
+}
+.section-title{
+  font-family:var(--font-display);
+  font-size:1.9rem;font-weight:300;color:var(--text);
+  letter-spacing:-.015em;
+}
+.section-link{font-size:.75rem;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase}
+.section-link:hover{color:var(--amber)}
+
+.subjects-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;
+}
+.subject-card{
+  background:var(--bg2);
+  padding:32px 28px;
+  cursor:pointer;
+  transition:background .2s;
+  position:relative;
+}
+.subject-card:hover{background:var(--bg3)}
+.subject-card::after{
+  content:'→';
+  position:absolute;bottom:28px;right:28px;
+  font-size:1rem;color:var(--text3);
+  transition:transform .2s,color .2s;
+}
+.subject-card:hover::after{transform:translateX(4px);color:var(--amber)}
+
+.card-accent-bar{
+  height:2px;background:var(--card-accent,var(--amber));
+  margin-bottom:24px;width:32px;
+  transition:width .3s;
+}
+.subject-card:hover .card-accent-bar{width:56px}
+.card-icon{
+  font-family:var(--font-display);
+  font-size:1.1rem;font-weight:400;font-style:italic;
+  color:var(--card-accent,var(--amber));
+  margin-bottom:12px;
+}
+.card-title{
+  font-family:var(--font-display);
+  font-size:1.2rem;font-weight:400;
+  color:var(--text);margin-bottom:10px;letter-spacing:-.01em;
+}
+.card-desc{font-size:.82rem;color:var(--text2);line-height:1.7;margin-bottom:18px}
+.card-topics{
+  display:flex;gap:6px;flex-wrap:wrap;
+}
+.card-topic-tag{
+  font-size:.68rem;padding:3px 10px;border-radius:100px;
+  background:var(--bg3);color:var(--text3);
+  border:1px solid var(--border);
+  letter-spacing:.03em;font-weight:500;
+}
+
+/* How to use */
+.how-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px;
+}
+.how-card{
+  padding:28px;background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);
+}
+.how-num{
+  font-family:var(--font-display);font-size:3rem;font-weight:300;
+  color:var(--border2);line-height:1;margin-bottom:16px;letter-spacing:-.03em;
+}
+.how-title{font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:8px}
+.how-desc{font-size:.82rem;color:var(--text2);line-height:1.7}
+
+/* Quote callout */
+.quote-block{
+  margin:80px 0;padding:48px 64px;
+  border-left:3px solid var(--amber);
+  background:var(--bg2);border-radius:0 var(--radius) var(--radius) 0;
+}
+.quote-block blockquote{
+  font-family:var(--font-display);
+  font-size:1.5rem;font-style:italic;font-weight:300;
+  color:var(--text);line-height:1.5;letter-spacing:-.01em;
+  margin-bottom:16px;
+}
+.quote-attr{font-size:.78rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+
+/* ══════════════════════════════════════════
+   ── SUBJECTS PAGE
+══════════════════════════════════════════ */
+.page-hero{
+  padding:72px 0 56px;border-bottom:1px solid var(--border);
+  background:var(--bg);position:relative;
+}
+.page-hero h2{
+  font-family:var(--font-display);font-size:2.8rem;font-weight:300;
+  letter-spacing:-.02em;margin-bottom:12px;
+}
+.page-hero p{font-size:.92rem;color:var(--text2);max-width:520px;line-height:1.75}
+
+/* Top search */
+.subject-search-wrap{
+  display:flex;align-items:center;gap:16px;
+  margin:36px 0 28px;
+}
+.subject-search{
+  display:flex;align-items:center;gap:10px;
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:var(--radius-sm);padding:10px 16px;
+  flex:1;max-width:420px;
+  transition:border-color .15s;
+}
+.subject-search:focus-within{border-color:var(--amber-dim)}
+.subject-search input{
+  flex:1;background:none;border:none;outline:none;
+  color:var(--text);font-size:.88rem;font-family:var(--font-ui);
+}
+.subject-search input::placeholder{color:var(--text3)}
+
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:40px}
+.filt-btn{
+  padding:5px 14px;border-radius:100px;
+  font-size:.72rem;font-weight:600;
+  border:1px solid var(--border2);
+  color:var(--text3);background:var(--bg2);
+  letter-spacing:.05em;text-transform:uppercase;
+  transition:.15s;
+}
+.filt-btn:hover,.filt-btn.active{
+  background:var(--amber);color:#0b0b0a;border-color:var(--amber);
+}
+
+/* Subject accordion section */
+.subject-section{margin-bottom:48px}
+.subject-section-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 24px;
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius) var(--radius) 0 0;
+  cursor:pointer;
+  transition:background .15s;
+}
+.subject-section-hdr:hover{background:var(--bg3)}
+.ssh-left{display:flex;align-items:center;gap:16px}
+.ssh-icon{
+  width:40px;height:40px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--bg3);border:1px solid var(--border2);
+  font-family:var(--font-display);font-size:1rem;font-style:italic;
+  color:var(--ssh-color,var(--amber));
+  flex-shrink:0;
+}
+.ssh-title{font-family:var(--font-display);font-size:1.3rem;font-weight:400;letter-spacing:-.01em}
+.ssh-sub{font-size:.76rem;color:var(--text3);margin-top:3px}
+.ssh-right{display:flex;align-items:center;gap:12px}
+.ssh-count{font-size:.75rem;color:var(--text3);font-weight:500}
+.ssh-chevron{color:var(--text3);font-size:.8rem;transition:transform .25s}
+.subject-section.expanded .ssh-chevron{transform:rotate(180deg)}
+
+.topics-grid{
+  display:none;
+  grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);border-top:none;
+  border-radius:0 0 var(--radius) var(--radius);overflow:hidden;
+}
+.subject-section.expanded .topics-grid{display:grid}
+
+.topic-card{
+  background:var(--bg);padding:18px 20px;
+  cursor:pointer;transition:background .15s;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;
+}
+.topic-card:hover{background:var(--bg2)}
+.tc-left{}
+.tc-name{font-size:.88rem;font-weight:500;color:var(--text);margin-bottom:5px}
+.tc-tags{display:flex;gap:5px;flex-wrap:wrap}
+.tc-tag{
+  font-size:.62rem;padding:2px 7px;border-radius:100px;
+  background:var(--bg3);color:var(--text3);
+  border:1px solid var(--border);font-weight:500;letter-spacing:.03em;
+}
+.tc-tag.pyq{background:rgba(212,169,74,.1);color:var(--amber);border-color:var(--amber-dim)}
+.tc-tag.important{background:rgba(58,184,160,.1);color:var(--teal);border-color:var(--teal-dim)}
+.tc-right{
+  font-size:.72rem;color:var(--text3);
+  white-space:nowrap;flex-shrink:0;
+  font-family:var(--font-mono);
+}
+
+/* ══════════════════════════════════════════
+   ── NOTES VIEWER
+══════════════════════════════════════════ */
+.viewer-layout{
+  display:grid;
+  grid-template-columns:var(--sidebar-w) 1fr;
+  min-height:calc(100vh - var(--nav-h));
+}
+.viewer-sidebar{
+  border-right:1px solid var(--border);
+  padding:28px 0;
+  position:sticky;top:var(--nav-h);
+  height:calc(100vh - var(--nav-h));
+  overflow-y:auto;
+  background:var(--bg2);
+  scrollbar-width:thin;scrollbar-color:var(--border) transparent;
+}
+.viewer-sidebar::-webkit-scrollbar{width:4px}
+.viewer-sidebar::-webkit-scrollbar-track{background:transparent}
+.viewer-sidebar::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+.sidebar-back{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 20px 18px;
+  font-size:.76rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--text3);cursor:pointer;
+  border-bottom:1px solid var(--border);margin-bottom:20px;
+  transition:color .15s;
+}
+.sidebar-back:hover{color:var(--amber)}
+
+.sidebar-subject-name{
+  padding:0 20px 16px;
+  font-family:var(--font-display);font-size:1.1rem;font-weight:400;
+  color:var(--text);
+  border-bottom:1px solid var(--border);margin-bottom:8px;
+}
+
+.sidebar-section-label{
+  padding:12px 20px 6px;
+  font-size:.66rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text3);
+}
+.sidebar-item{
+  display:block;padding:8px 20px;
+  font-size:.83rem;color:var(--text2);cursor:pointer;
+  transition:.12s;line-height:1.4;border-left:2px solid transparent;
+}
+.sidebar-item:hover{background:var(--bg3);color:var(--text);border-left-color:var(--border2)}
+.sidebar-item.active{
+  background:var(--bg3);color:var(--text);
+  border-left-color:var(--amber);font-weight:500;
+}
+
+/* Note content area */
+.viewer-main{
+  padding:56px 80px;max-width:860px;
+  background:var(--bg);
+}
+.viewer-breadcrumb{
+  display:flex;align-items:center;gap:8px;
+  font-size:.75rem;color:var(--text3);
+  margin-bottom:40px;
+  font-weight:500;letter-spacing:.03em;
+}
+.viewer-breadcrumb .bc-link{cursor:pointer;transition:color .12s}
+.viewer-breadcrumb .bc-link:hover{color:var(--amber)}
+.viewer-breadcrumb .bc-sep{color:var(--text4)}
+
+/* Note actions toolbar */
+.note-toolbar{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:40px;padding-bottom:24px;
+  border-bottom:1px solid var(--border);
+}
+.toolbar-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:6px 14px;border-radius:var(--radius-sm);
+  font-size:.73rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+  background:var(--bg2);border:1px solid var(--border);color:var(--text2);
+  transition:.15s;
+}
+.toolbar-btn:hover{background:var(--bg3);color:var(--text);border-color:var(--border2)}
+.toolbar-btn.active{background:rgba(212,169,74,.1);color:var(--amber);border-color:var(--amber-dim)}
+
+/* Progress tracker within note */
+.note-progress-wrap{
+  margin-left:auto;display:flex;align-items:center;gap:8px;font-size:.72rem;color:var(--text3)
+}
+.note-progress-bar{
+  width:80px;height:3px;background:var(--border);border-radius:2px;overflow:hidden;
+}
+.note-progress-fill{height:100%;background:var(--amber);border-radius:2px;transition:width .3s}
+
+/* ══════════════════════════════════════════
+   MARKDOWN / NOTE RENDERING
+══════════════════════════════════════════ */
+.markdown-body{}
+.markdown-body h1{
+  font-family:var(--font-display);font-size:2.2rem;font-weight:300;
+  letter-spacing:-.02em;color:var(--text);margin-bottom:8px;line-height:1.15;
+}
+.markdown-body .note-meta{
+  display:flex;gap:8px;flex-wrap:wrap;margin-bottom:40px;margin-top:4px;
+}
+.markdown-body .note-tag{
+  font-size:.68rem;padding:3px 10px;border-radius:100px;
+  background:var(--bg2);border:1px solid var(--border2);
+  color:var(--text3);font-weight:500;letter-spacing:.04em;font-family:var(--font-mono);
+}
+.markdown-body h2{
+  font-family:var(--font-display);font-size:1.5rem;font-weight:400;
+  color:var(--text);margin:56px 0 18px;
+  padding-bottom:12px;border-bottom:1px solid var(--border);
+  letter-spacing:-.01em;
+}
+.markdown-body h3{
+  font-family:var(--font-display);font-size:1.2rem;font-weight:400;font-style:italic;
+  color:var(--text);margin:36px 0 12px;letter-spacing:-.005em;
+}
+.markdown-body h4{
+  font-size:.88rem;font-weight:700;color:var(--text);
+  margin:24px 0 8px;text-transform:uppercase;letter-spacing:.06em;
+}
+.markdown-body p{color:var(--text2);line-height:1.9;margin-bottom:18px;font-size:.97rem}
+.markdown-body ul,.markdown-body ol{
+  color:var(--text2);padding-left:20px;margin-bottom:18px;
+}
+.markdown-body li{margin-bottom:8px;line-height:1.8;font-size:.97rem}
+.markdown-body li::marker{color:var(--amber)}
+.markdown-body strong{color:var(--text);font-weight:600}
+.markdown-body em{color:var(--text2)}
+
+.markdown-body code{
+  font-family:var(--font-mono);font-size:.8em;
+  background:var(--bg3);color:var(--amber);
+  padding:2px 7px;border-radius:3px;border:1px solid var(--border);
+}
+.markdown-body pre{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:24px 28px;
+  overflow-x:auto;margin:24px 0;position:relative;
+}
+.markdown-body pre code{
+  background:none;padding:0;color:var(--text);font-size:.83rem;
+  line-height:1.75;border:none;
+}
+
+/* Formula block */
+.markdown-body .formula-block{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-left:3px solid var(--amber);
+  border-radius:0 var(--radius) var(--radius) 0;
+  padding:20px 28px;margin:24px 0;text-align:center;
+  font-size:1.05em;
+}
+
+.markdown-body blockquote{
+  border-left:3px solid var(--amber);
+  padding:16px 24px;background:var(--bg2);
+  border-radius:0 var(--radius) var(--radius) 0;
+  margin:24px 0;
+}
+.markdown-body blockquote p{margin-bottom:0;font-style:italic;color:var(--text2)}
+
+.markdown-body table{
+  width:100%;border-collapse:collapse;margin:24px 0;font-size:.86rem;
+}
+.markdown-body th{
+  background:var(--bg3);text-align:left;
+  padding:10px 16px;border:1px solid var(--border);
+  font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--text2);
+}
+.markdown-body td{
+  padding:10px 16px;border:1px solid var(--border);color:var(--text2);
+  line-height:1.6;
+}
+.markdown-body tr:hover td{background:var(--bg2)}
+.markdown-body hr{border:none;border-top:1px solid var(--border);margin:48px 0}
+
+/* Callout boxes */
+.callout{
+  border-radius:var(--radius);padding:20px 24px;margin:24px 0;
+  border:1px solid var(--border);
+}
+.callout.tip{background:rgba(58,184,160,.06);border-left:3px solid var(--teal);border-color:rgba(58,184,160,.2)}
+.callout.warn{background:rgba(212,169,74,.06);border-left:3px solid var(--amber);border-color:rgba(212,169,74,.2)}
+.callout.insight{background:rgba(88,112,216,.06);border-left:3px solid var(--indigo);border-color:rgba(88,112,216,.2)}
+.callout.danger{background:rgba(196,76,60,.06);border-left:3px solid var(--ruby);border-color:rgba(196,76,60,.2)}
+.callout-label{
+  font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  margin-bottom:8px;
+}
+.callout.tip .callout-label{color:var(--teal)}
+.callout.warn .callout-label{color:var(--amber)}
+.callout.insight .callout-label{color:var(--indigo)}
+.callout.danger .callout-label{color:var(--ruby)}
+.callout p{color:var(--text2);font-size:.9rem;margin-bottom:0;line-height:1.7}
+
+/* Complexity badge */
+.complexity-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--font-mono);font-size:.78rem;
+  padding:3px 10px;border-radius:3px;
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--amber);
+}
+
+/* Key formula row */
+.key-formulas{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:12px;margin:24px 0;
+}
+.key-formula{
+  padding:16px;background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius-sm);text-align:center;
+}
+.kf-label{font-size:.68rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;font-weight:600}
+.kf-value{font-family:var(--font-mono);font-size:.9rem;color:var(--amber);font-weight:500}
+
+/* Bookmark indicator */
+.bookmarked-indicator{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:.72rem;color:var(--amber);font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+}
+
+/* ══════════════════════════════════════════
+   ── ABOUT PAGE
+══════════════════════════════════════════ */
+.about-layout{
+  display:grid;grid-template-columns:1fr 360px;
+  gap:80px;padding:72px 0;align-items:start;
+}
+.about-main h2{
+  font-family:var(--font-display);font-size:2.4rem;font-weight:300;
+  letter-spacing:-.02em;margin-bottom:28px;
+}
+.about-main p{
+  color:var(--text2);line-height:1.9;margin-bottom:20px;font-size:.97rem;
+}
+.about-main h3{
+  font-family:var(--font-display);font-size:1.4rem;font-weight:300;font-style:italic;
+  margin:48px 0 20px;color:var(--text);
+}
+
+.achievement-card{
+  display:flex;gap:20px;align-items:flex-start;
+  padding:24px;background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);margin-bottom:14px;
+  transition:border-color .15s;
+}
+.achievement-card:hover{border-color:var(--amber-dim)}
+.achievement-rank{
+  font-family:var(--font-display);font-size:2.4rem;font-weight:300;
+  color:var(--amber);line-height:1;flex-shrink:0;letter-spacing:-.02em;
+}
+.achievement-text{font-size:.88rem;color:var(--text2);line-height:1.6}
+.achievement-text strong{display:block;color:var(--text);margin-bottom:4px;font-size:.9rem}
+
+.about-sidebar{}
+.profile-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:36px;
+  position:sticky;top:calc(var(--nav-h) + 24px);
+}
+.profile-name{
+  font-family:var(--font-display);font-size:1.6rem;font-weight:400;
+  margin-bottom:2px;letter-spacing:-.01em;
+}
+.profile-role{font-size:.8rem;color:var(--text3);margin-bottom:28px;font-weight:500;letter-spacing:.04em}
+.profile-item{
+  display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);
+}
+.profile-item:last-of-type{border-bottom:none}
+.pi-icon{font-size:1rem;flex-shrink:0;margin-top:2px;width:20px;text-align:center}
+.pi-text{font-size:.84rem;color:var(--text2);line-height:1.5}
+.pi-text strong{display:block;color:var(--text);margin-bottom:2px}
+
+/* ══════════════════════════════════════════
+   ── PYQ PAGE
+══════════════════════════════════════════ */
+.pyq-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:16px;margin-top:40px;
+}
+.pyq-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:24px;
+  cursor:pointer;transition:border-color .15s,background .15s;
+}
+.pyq-card:hover{border-color:var(--amber-dim);background:var(--bg3)}
+.pyq-meta{
+  display:flex;align-items:center;gap:8px;margin-bottom:14px;
+}
+.pyq-year{
+  font-family:var(--font-mono);font-size:.74rem;
+  background:var(--bg3);border:1px solid var(--border);
+  padding:3px 8px;border-radius:3px;color:var(--amber);font-weight:500;
+}
+.pyq-paper{
+  font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--text3);
+}
+.pyq-q{font-size:.9rem;color:var(--text);line-height:1.65;margin-bottom:14px;font-weight:500}
+.pyq-footer{display:flex;align-items:center;justify-content:space-between}
+.pyq-topic{font-size:.74rem;color:var(--text3)}
+.pyq-marks{
+  font-family:var(--font-mono);font-size:.72rem;color:var(--teal);font-weight:500;
+}
+
+/* ══════════════════════════════════════════
+   ── FORMULA SHEET PAGE
+══════════════════════════════════════════ */
+.formula-section{margin-bottom:48px}
+.formula-section h3{
+  font-family:var(--font-display);font-size:1.4rem;font-weight:400;font-style:italic;
+  margin-bottom:20px;color:var(--text);border-bottom:1px solid var(--border);
+  padding-bottom:12px;
+}
+.formula-list{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:12px;
+}
+.formula-item{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:16px 20px;
+  transition:border-color .15s;
+}
+.formula-item:hover{border-color:var(--amber-dim)}
+.fi-name{font-size:.74rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.fi-expr{
+  font-family:var(--font-mono);font-size:.88rem;color:var(--amber);
+  line-height:1.6;
+}
+.fi-note{font-size:.76rem;color:var(--text3);margin-top:8px;line-height:1.5}
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+footer{
+  border-top:1px solid var(--border);padding:48px 0;margin-top:0;
+  background:var(--bg2);
+}
+.footer-inner{
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:20px;
+}
+.footer-logo{
+  font-family:var(--font-display);font-size:1.1rem;font-weight:300;
+  color:var(--text2);letter-spacing:-.01em;
+}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-links a{font-size:.76rem;color:var(--text3);font-weight:500;letter-spacing:.04em}
+.footer-links a:hover{color:var(--amber)}
+.footer-right{font-size:.74rem;color:var(--text3)}
+
+/* ══════════════════════════════════════════
+   STUDY TIMER
+══════════════════════════════════════════ */
+.timer-widget{
+  position:fixed;bottom:24px;right:24px;z-index:300;
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:12px;padding:16px 20px;
+  box-shadow:var(--shadow-lg);
+  display:none;
+  flex-direction:column;align-items:center;gap:8px;
+  min-width:160px;
+}
+.timer-widget.visible{display:flex}
+.timer-display{
+  font-family:var(--font-mono);font-size:1.5rem;color:var(--amber);font-weight:400;
+}
+.timer-label{font-size:.68rem;color:var(--text3);letter-spacing:.08em;text-transform:uppercase}
+.timer-controls{display:flex;gap:6px}
+.timer-btn{
+  padding:5px 12px;border-radius:var(--radius-sm);font-size:.72rem;font-weight:600;
+  border:1px solid var(--border2);color:var(--text2);background:var(--bg3);
+  transition:.15s;letter-spacing:.04em;
+}
+.timer-btn:hover{background:var(--bg4);color:var(--text)}
+.timer-btn.primary{background:var(--amber);color:#0b0b0a;border-color:var(--amber)}
+.timer-btn.primary:hover{background:var(--amber2)}
+
+#timer-fab{
+  position:fixed;bottom:24px;right:24px;z-index:299;
+  width:48px;height:48px;border-radius:50%;
+  background:var(--bg2);border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;box-shadow:var(--shadow);
+  transition:transform .2s,background .15s;
+}
+#timer-fab:hover{background:var(--bg3);transform:scale(1.1)}
+
+/* ══════════════════════════════════════════
+   MOBILE
+══════════════════════════════════════════ */
+.mobile-menu{
+  display:none;flex-direction:column;gap:2px;
+  padding:12px 0;border-top:1px solid var(--border);
+  background:var(--bg);position:fixed;top:var(--nav-h);left:0;right:0;
+  z-index:199;box-shadow:var(--shadow-lg);
+}
+.mobile-menu.open{display:flex}
+.mobile-menu a{padding:12px 28px;font-size:.9rem;color:var(--text2);font-weight:500}
+
+@media(max-width:1100px){
+  .stats-strip{grid-template-columns:repeat(3,1fr)}
+  .about-layout{grid-template-columns:1fr}
+  .profile-card{position:static}
+}
+@media(max-width:900px){
+  .viewer-layout{grid-template-columns:1fr}
+  .viewer-sidebar{display:none}
+  .viewer-main{padding:32px 24px}
+}
+@media(max-width:680px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .hero h1{font-size:2.4rem}
+  .stats-strip{grid-template-columns:1fr 1fr}
+  .wrap{padding:0 18px}
+  .viewer-main{padding:24px 18px}
+  .quote-block{padding:28px}
+  #search-trigger .search-kbd{display:none}
+}
+@media(max-width:400px){
+  .stats-strip{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div class="progress-bar" id="progress-bar"></div>
+
+<!-- ══════ NAV ══════ -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#" onclick="showPage('home');return false">
+      <em>GATE</em> Notes · AG
+    </a>
+    <div class="nav-links">
+      <a href="#" onclick="showPage('home');return false" id="nav-home" class="active">Home</a>
+      <a href="#" onclick="showPage('subjects');return false" id="nav-subjects">Subjects</a>
+      <a href="#" onclick="showPage('formulas');return false" id="nav-formulas">Formula Sheets</a>
+      <a href="#" onclick="showPage('pyq');return false" id="nav-pyq">PYQs</a>
+      <a href="#" onclick="showPage('about');return false" id="nav-about">About</a>
+    </div>
+    <div class="nav-right">
+      <button id="search-trigger" onclick="openSearch()">
+        <span>🔍</span>
+        <span>Quick search</span>
+        <span class="search-kbd">⌘K</span>
+      </button>
+      <button id="theme-btn" onclick="toggleTheme()" title="Toggle theme">☀</button>
+      <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#" onclick="showPage('home');toggleMenu();return false">Home</a>
+    <a href="#" onclick="showPage('subjects');toggleMenu();return false">Subjects</a>
+    <a href="#" onclick="showPage('formulas');toggleMenu();return false">Formula Sheets</a>
+    <a href="#" onclick="showPage('pyq');toggleMenu();return false">PYQs</a>
+    <a href="#" onclick="showPage('about');toggleMenu();return false">About</a>
+  </div>
+</nav>
+
+<!-- ══════ SEARCH OVERLAY ══════ -->
+<div class="search-overlay" id="search-overlay" onclick="closeSearch(event)">
+  <div class="search-modal" onclick="event.stopPropagation()">
+    <div class="search-input-row">
+      <span>🔍</span>
+      <input type="text" id="search-input" placeholder="Search topics, formulas, algorithms..."
+             oninput="runSearch(this.value)" autofocus/>
+      <button onclick="closeSearch()" style="color:var(--text3);font-size:.8rem;padding:4px 8px;border-radius:3px;background:var(--bg3)">ESC</button>
+    </div>
+    <div class="search-results" id="search-results">
+      <div class="search-empty">Type to search across all 60+ topics</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ TIMER WIDGET ══════ -->
+<button id="timer-fab" onclick="toggleTimer()" title="Study Timer">⏱</button>
+<div class="timer-widget" id="timer-widget">
+  <div class="timer-label">Study Timer</div>
+  <div class="timer-display" id="timer-display">25:00</div>
+  <div class="timer-controls">
+    <button class="timer-btn primary" id="timer-start-btn" onclick="timerStart()">Start</button>
+    <button class="timer-btn" onclick="timerReset()">Reset</button>
+  </div>
+  <div class="timer-label" id="timer-session-count">Session 1 of Pomodoro</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     HOME PAGE
+══════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+  <div class="wrap">
+    <section class="hero">
+      <div class="hero-bg-lines"></div>
+      <p class="hero-eyebrow">GATE 2026 · Open Access · Verified Results</p>
+      <h1>Notes built for<br/><em>deep understanding,</em><br/>not shortcuts.</h1>
+      <p class="hero-sub">
+        Rigorous, research-grade GATE preparation notes. Structured by an AIR 3 ranker
+        across 6 core subjects — 60+ topics, 400+ practice problems, and curated PYQ analysis.
+        Everything is free. Everything is open.
+      </p>
+      <div class="rank-pills">
+        <span class="rank-pill">
+          <span class="rank-pill-dot" style="background:var(--amber)"></span>
+          <span class="rank-num">AIR 3</span>
+          GATE DA 2026
+        </span>
+        <span class="rank-pill">
+          <span class="rank-pill-dot" style="background:var(--teal)"></span>
+          <span class="rank-num">AIR 147</span>
+          GATE CS 2026
+        </span>
+        <span class="rank-pill">
+          <span class="rank-pill-dot" style="background:var(--indigo)"></span>
+          MS Student, Rutgers University
+        </span>
+      </div>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#" onclick="showPage('subjects');return false">Browse Subjects →</a>
+        <a class="btn btn-secondary" href="https://github.com/Aranya2801/ARANYA-GHOSH-GATE-NOTES-" target="_blank">↗ GitHub Repository</a>
+        <a class="btn btn-secondary" href="#" onclick="showPage('pyq');return false">Practice PYQs</a>
+      </div>
+
+      <div class="stats-strip">
+        <div class="stat-block">
+          <div class="stat-num">6<span>+</span></div>
+          <div class="stat-label">Core Subjects</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num">60<span>+</span></div>
+          <div class="stat-label">Topics</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num">400<span>+</span></div>
+          <div class="stat-label">Practice Problems</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num">8<span>yr</span></div>
+          <div class="stat-label">PYQ Coverage</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Always Free</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-section">
+      <div class="home-section-header">
+        <h2 class="section-title">Core Subjects</h2>
+        <a class="section-link" href="#" onclick="showPage('subjects');return false">VIEW ALL →</a>
+      </div>
+      <div class="subjects-grid" id="home-subjects-grid"></div>
+    </section>
+
+    <div class="quote-block">
+      <blockquote>"GATE is a test of clarity, not cleverness. The students who do well understand deeply and think clearly under pressure — they don't just recall more."</blockquote>
+      <div class="quote-attr">— Study philosophy behind these notes</div>
+    </div>
+
+    <section class="home-section" style="border-top:1px solid var(--border)">
+      <div class="home-section-header">
+        <h2 class="section-title">How to Use These Notes</h2>
+      </div>
+      <div class="how-grid">
+        <div class="how-card">
+          <div class="how-num">01</div>
+          <div class="how-title">First Pass</div>
+          <div class="how-desc">Read the full notes for each topic. Derive every formula at least once. Build the mental model — don't skip this step.</div>
+        </div>
+        <div class="how-card">
+          <div class="how-num">02</div>
+          <div class="how-title">Active Practice</div>
+          <div class="how-desc">Attempt every practice problem without hints first. Check solutions only after a genuine attempt. The struggle is the learning.</div>
+        </div>
+        <div class="how-card">
+          <div class="how-num">03</div>
+          <div class="how-title">Spaced Revision</div>
+          <div class="how-desc">Use the formula sheets weekly. Don't re-read — test yourself with blank-paper recall before checking the sheet.</div>
+        </div>
+        <div class="how-card">
+          <div class="how-num">04</div>
+          <div class="how-title">PYQ Analysis</div>
+          <div class="how-desc">After each topic, solve 5+ years of PYQs. When you get one wrong, trace back to which concept you missed — don't just note the answer.</div>
+        </div>
+        <div class="how-card">
+          <div class="how-num">05</div>
+          <div class="how-title">Weak Area Loops</div>
+          <div class="how-desc">Keep a personal error log. Every wrong answer has a root cause. Fix the root, not the symptom. Return to that topic in two weeks.</div>
+        </div>
+        <div class="how-card">
+          <div class="how-num">06</div>
+          <div class="how-title">Exam Week</div>
+          <div class="how-desc">Formula sheets only. No new topics. High-confidence problems only. Simulate full mock tests under timed conditions.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <footer>
+    <div class="wrap footer-inner">
+      <div class="footer-logo"><em>GATE</em> Notes · Aranya Ghosh</div>
+      <div class="footer-links">
+        <a href="https://github.com/Aranya2801/ARANYA-GHOSH-GATE-NOTES-" target="_blank">GitHub</a>
+        <a href="#" onclick="showPage('about');return false">About</a>
+        <a href="#" onclick="showPage('formulas');return false">Formula Sheets</a>
+        <a href="#" onclick="showPage('pyq');return false">PYQs</a>
+      </div>
+      <div class="footer-right">MIT License · Free with attribution</div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SUBJECTS PAGE
+══════════════════════════════════════════ -->
+<div id="page-subjects" class="page">
+  <div class="page-hero">
+    <div class="wrap">
+      <h2>All Subjects</h2>
+      <p>Six core subjects, 60+ topics. Each topic has full notes, practice problems, and a summary sheet. Click any topic to open the notes viewer.</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="subject-search-wrap">
+      <div class="subject-search">
+        <span style="color:var(--text3)">🔍</span>
+        <input type="text" placeholder="Search topics…" id="topic-search" oninput="filterTopics()"/>
+      </div>
+    </div>
+    <div class="filter-row" id="filter-row">
+      <button class="filt-btn active" onclick="setFilter('all',this)">All</button>
+      <button class="filt-btn" onclick="setFilter('important',this)">High Priority</button>
+      <button class="filt-btn" onclick="setFilter('pyq',this)">PYQ Frequent</button>
+      <button class="filt-btn" onclick="setFilter('formula',this)">Formula Heavy</button>
+      <button class="filt-btn" onclick="setFilter('conceptual',this)">Conceptual</button>
+    </div>
+    <div id="subjects-full-list"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     NOTES VIEWER
+══════════════════════════════════════════ -->
+<div id="page-notes" class="page">
+  <div class="viewer-layout">
+    <aside class="viewer-sidebar">
+      <div class="sidebar-back" onclick="showPage('subjects')">← Back to Subjects</div>
+      <div class="sidebar-subject-name" id="sidebar-subject-name"></div>
+      <div id="sidebar-content"></div>
+    </aside>
+    <main class="viewer-main">
+      <div class="viewer-breadcrumb" id="viewer-breadcrumb">
+        <span class="bc-link" onclick="showPage('subjects')">Subjects</span>
+        <span class="bc-sep">›</span>
+        <span id="bc-subject"></span>
+        <span class="bc-sep">›</span>
+        <span id="bc-topic"></span>
+      </div>
+      <div class="note-toolbar">
+        <button class="toolbar-btn" onclick="toggleBookmark()" id="bookmark-btn">☆ Bookmark</button>
+        <button class="toolbar-btn" onclick="window.print()">⎙ Print</button>
+        <button class="toolbar-btn" onclick="increaseFontSize()">A+</button>
+        <button class="toolbar-btn" onclick="decreaseFontSize()">A−</button>
+        <div class="note-progress-wrap">
+          <span id="read-progress-label">0%</span>
+          <div class="note-progress-bar">
+            <div class="note-progress-fill" id="read-progress-fill"></div>
+          </div>
+        </div>
+      </div>
+      <div class="markdown-body" id="note-content"></div>
+    </main>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     FORMULA SHEETS PAGE
+══════════════════════════════════════════ -->
+<div id="page-formulas" class="page">
+  <div class="page-hero">
+    <div class="wrap">
+      <h2>Formula Sheets</h2>
+      <p>Quick reference for every key formula, identity, and complexity class. Use these for revision — derive from first principles first.</p>
+    </div>
+  </div>
+  <div class="wrap" style="padding-top:48px;padding-bottom:80px">
+    <div id="formula-content"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PYQ PAGE
+══════════════════════════════════════════ -->
+<div id="page-pyq" class="page">
+  <div class="page-hero">
+    <div class="wrap">
+      <h2>Previous Year Questions</h2>
+      <p>Curated PYQs from GATE CS and DA, 2018–2026. Each question links back to the relevant notes section. Pattern analysis included.</p>
+    </div>
+  </div>
+  <div class="wrap" style="padding-top:40px;padding-bottom:80px">
+    <div class="filter-row" id="pyq-filter-row">
+      <button class="filt-btn active" onclick="setPyqFilter('all',this)">All Papers</button>
+      <button class="filt-btn" onclick="setPyqFilter('DA',this)">GATE DA</button>
+      <button class="filt-btn" onclick="setPyqFilter('CS',this)">GATE CS</button>
+      <button class="filt-btn" onclick="setPyqFilter('Mathematics',this)">Mathematics</button>
+      <button class="filt-btn" onclick="setPyqFilter('Algorithms',this)">Algorithms</button>
+      <button class="filt-btn" onclick="setPyqFilter('ML',this)">ML / AI</button>
+    </div>
+    <div class="pyq-grid" id="pyq-grid"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     ABOUT PAGE
+══════════════════════════════════════════ -->
+<div id="page-about" class="page">
+  <div class="wrap">
+    <div class="about-layout">
+      <div class="about-main">
+        <h2>About This Project</h2>
+        <p>
+          This repository is the exact study system I built for GATE 2026. It started as my personal
+          notes — disorganized, incomplete, full of margins and shortcuts. Over six months of preparation,
+          it became something more deliberate: a structured thinking companion designed to build
+          genuine understanding, not just exam-ready recall.
+        </p>
+        <p>
+          The organizing principle is simple: <strong>every idea earns its place.</strong> Every formula
+          has a derivation. Every algorithm has a worked trace. Every section ends with an honest
+          statement of what you must be able to do — not just what you must know.
+        </p>
+        <p>
+          I secured <strong>AIR 3 in GATE 2026 (Data Science & AI)</strong> and
+          <strong>AIR 147 in GATE 2026 (CS & IT)</strong>. I am sharing everything I used — notes,
+          practice problems, PYQ analysis, strategy — because I benefited enormously from materials
+          shared openly by others during my preparation.
+        </p>
+
+        <h3>Results</h3>
+        <div class="achievement-card">
+          <div class="achievement-rank">3</div>
+          <div class="achievement-text">
+            <strong>AIR 3 — GATE 2026 (Data Science & AI)</strong>
+            Preparation focused on Statistics, Linear Algebra, Machine Learning, and Python. The DA paper
+            rewards depth in probability and ML fundamentals more than breadth.
+          </div>
+        </div>
+        <div class="achievement-card">
+          <div class="achievement-rank">147</div>
+          <div class="achievement-text">
+            <strong>AIR 147 — GATE 2026 (CS & IT)</strong>
+            Balanced preparation across Algorithms, OS, DBMS, Networks, and Mathematics. CS requires wider
+            coverage but the same depth of understanding on each topic.
+          </div>
+        </div>
+
+        <h3>What makes these notes different?</h3>
+        <p>
+          Most GATE notes are lists of facts. These are not. Each topic has a conceptual narrative —
+          an explanation of <em>why</em> something is true, not just <em>what</em> is true. The practice
+          problems are selected to reveal the most common reasoning gaps, not to be exhaustive.
+          The summary sheets are designed for the last 10 days of preparation, not for first-pass learning.
+        </p>
+        <p>
+          I used these notes to prepare in 6 months while juggling college coursework. They are
+          efficient by necessity. Every page justifies its existence.
+        </p>
+
+        <h3>How to contribute</h3>
+        <p>
+          Found an error? Have a better explanation for a topic? Want to add a solved PYQ?
+          Open a pull request on GitHub. Contributions are welcome and credited. Please follow
+          the note-template format and maintain the tone: precise, honest, without unnecessary filler.
+        </p>
+      </div>
+
+      <div class="about-sidebar">
+        <div class="profile-card">
+          <div class="profile-name">Aranya Ghosh</div>
+          <div class="profile-role">MS Student · Rutgers University</div>
+          <div class="profile-item">
+            <div class="pi-icon">🏆</div>
+            <div class="pi-text">
+              <strong>AIR 3, GATE DA 2026</strong>
+              Data Science & Artificial Intelligence
+            </div>
+          </div>
+          <div class="profile-item">
+            <div class="pi-icon">🎯</div>
+            <div class="pi-text">
+              <strong>AIR 147, GATE CS 2026</strong>
+              Computer Science & IT
+            </div>
+          </div>
+          <div class="profile-item">
+            <div class="pi-icon">🎓</div>
+            <div class="pi-text">
+              <strong>Rutgers University</strong>
+              Master's Student (Current)
+            </div>
+          </div>
+          <div class="profile-item">
+            <div class="pi-icon">📂</div>
+            <div class="pi-text">
+              <strong>GitHub</strong>
+              <a href="https://github.com/Aranya2801" target="_blank">Aranya2801</a>
+            </div>
+          </div>
+          <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border)">
+            <div style="font-size:.72rem;color:var(--text3);margin-bottom:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase">Quick Navigation</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <a href="#" onclick="showPage('subjects');return false" style="font-size:.84rem;color:var(--text2)">→ Browse All Subjects</a>
+              <a href="#" onclick="showPage('formulas');return false" style="font-size:.84rem;color:var(--text2)">→ Formula Sheets</a>
+              <a href="#" onclick="showPage('pyq');return false" style="font-size:.84rem;color:var(--text2)">→ PYQ Practice</a>
+              <a href="https://github.com/Aranya2801/ARANYA-GHOSH-GATE-NOTES-" target="_blank" style="font-size:.84rem;color:var(--text2)">→ GitHub Repository</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     DATA & JAVASCRIPT
+══════════════════════════════════════════ -->
+<script>
+/* ════════════════════════════════════════
+   DATA LAYER
+════════════════════════════════════════ */
+const SUBJECTS = [
+  {
+    id:'maths', name:'Mathematics', icon:'∑', accent:'#d4a94a',
+    desc:'The quantitative backbone of GATE. Linear Algebra and Probability alone account for 20–25% of the DA paper.',
+    topics:[
+      {name:'Linear Algebra',tags:['important','pyq','formula'],time:'4–5 hrs',
+       subtopics:['Vector spaces & bases','Rank-nullity theorem','Eigenvalues & eigenvectors','Matrix decompositions (LU, QR, SVD)','Positive definite matrices']},
+      {name:'Eigenvalues & Diagonalization',tags:['formula','pyq'],time:'2–3 hrs',
+       subtopics:['Characteristic polynomial','Cayley-Hamilton theorem','Diagonalization conditions','Power of matrices via eigenvalues']},
+      {name:'Calculus — Single & Multivariable',tags:['formula'],time:'3–4 hrs',
+       subtopics:['Limits & continuity','Differentiation & integration','Partial derivatives','Gradient, divergence, curl','Maxima & minima']},
+      {name:'Differential Equations',tags:['formula'],time:'2 hrs',
+       subtopics:['First-order ODEs','Second-order linear ODEs','Homogeneous & particular solutions']},
+      {name:'Probability Theory',tags:['formula','important','pyq'],time:'4 hrs',
+       subtopics:['Sample spaces & events','Conditional probability','Bayes theorem (deep)','Random variables','Expectation & variance']},
+      {name:'Probability Distributions',tags:['formula','pyq'],time:'3 hrs',
+       subtopics:['Bernoulli, Binomial, Poisson','Uniform, Normal, Exponential','CLT & Law of Large Numbers','MGF & characteristic functions']},
+      {name:'Statistics for ML',tags:['formula','important'],time:'3 hrs',
+       subtopics:['MLE & MAP estimation','Hypothesis testing','Confidence intervals','Correlation & regression']},
+      {name:'Discrete Mathematics',tags:['conceptual','important'],time:'3 hrs',
+       subtopics:['Logic & proofs','Set theory','Relations & functions','Combinatorics','Recurrence relations']},
+      {name:'Graph Theory',tags:['conceptual','pyq'],time:'2–3 hrs',
+       subtopics:['Graph representations','Connectivity & planarity','Trees & spanning trees','Eulerian & Hamiltonian paths','Coloring & matching']},
+    ]
+  },
+  {
+    id:'algorithms', name:'Algorithms & DSA', icon:'⚡', accent:'#5870d8',
+    desc:'Core CS fundamentals. Dynamic Programming and Graph Algorithms are the highest-yield topics for both CS and DA papers.',
+    topics:[
+      {name:'Sorting Algorithms',tags:['important','pyq'],time:'2–3 hrs',
+       subtopics:['Comparison sorts: analysis','Quicksort (best/worst/expected)','Mergesort & stable sorts','Non-comparison: Radix, Counting','Lower bounds for sorting']},
+      {name:'Dynamic Programming',tags:['important','pyq'],time:'5–6 hrs',
+       subtopics:['Optimal substructure proof','Memoization vs tabulation','Classic DPs: LCS, LIS, Knapsack','Edit distance & string DPs','DP on trees & intervals']},
+      {name:'Graph Algorithms',tags:['important','pyq'],time:'4 hrs',
+       subtopics:['BFS & DFS with analysis','Dijkstra & Bellman-Ford','Floyd-Warshall (all-pairs)','Prim & Kruskal (MST)','Topological sort & SCC']},
+      {name:'Divide & Conquer',tags:['formula','pyq'],time:'2 hrs',
+       subtopics:['Master theorem (all cases)','Binary search variants','Karatsuba multiplication','Closest pair of points']},
+      {name:'Trees & Heaps',tags:['conceptual','pyq'],time:'3 hrs',
+       subtopics:['BST operations & AVL rotation','Red-black trees (conceptual)','Heaps & heap operations','Huffman coding']},
+      {name:'Hashing',tags:['conceptual'],time:'1.5 hrs',
+       subtopics:['Hash functions & collision','Chaining vs open addressing','Load factor & rehashing','Perfect hashing']},
+      {name:'NP-Completeness',tags:['conceptual','important'],time:'2–3 hrs',
+       subtopics:['P vs NP','Polynomial reductions','NP-complete problems list','Approximation algorithms']},
+      {name:'Amortized Analysis',tags:['conceptual','formula'],time:'1.5 hrs',
+       subtopics:['Aggregate method','Accounting method','Potential method']},
+    ]
+  },
+  {
+    id:'os', name:'Operating Systems', icon:'⚙', accent:'#c44c3c',
+    desc:'Processes, scheduling, synchronization, memory — these topics appear in nearly every GATE CS paper.',
+    topics:[
+      {name:'Processes & Threads',tags:['conceptual','important'],time:'3 hrs',
+       subtopics:['Process lifecycle & PCB','Context switching cost','Thread models (user/kernel)','Concurrency vs parallelism']},
+      {name:'CPU Scheduling',tags:['formula','pyq'],time:'2–3 hrs',
+       subtopics:['FCFS, SJF, SRTF, Round Robin','Priority scheduling','Multilevel queue & feedback','Scheduling criteria: turnaround, waiting']},
+      {name:'Synchronization',tags:['important','pyq'],time:'3 hrs',
+       subtopics:['Race conditions & critical section','Peterson's algorithm','Mutex & semaphores','Monitors & condition variables','Classic problems: Dining, Readers-Writers']},
+      {name:'Deadlocks',tags:['important','pyq'],time:'2 hrs',
+       subtopics:['Four conditions (Coffman)','Resource-allocation graph','Banker's algorithm (worked examples)','Detection & recovery']},
+      {name:'Memory Management',tags:['formula','pyq'],time:'3 hrs',
+       subtopics:['Segmentation & paging','Translation lookaside buffer','Page replacement: FIFO, LRU, Optimal','Thrashing & working set']},
+      {name:'File Systems',tags:['conceptual'],time:'2 hrs',
+       subtopics:['File allocation: contiguous, linked, indexed','Directory structures','Journaling & crash recovery','UNIX inode model']},
+    ]
+  },
+  {
+    id:'dbms', name:'DBMS', icon:'▤', accent:'#3ab8a0',
+    desc:'Normalization and SQL together form the most consistently tested DBMS area across all recent GATE papers.',
+    topics:[
+      {name:'Relational Model & Algebra',tags:['conceptual','important'],time:'2–3 hrs',
+       subtopics:['Relational schema & keys','Relational algebra operators','Query equivalences','Codd's rules']},
+      {name:'SQL — Complete Reference',tags:['important','pyq'],time:'3–4 hrs',
+       subtopics:['SELECT, JOIN, GROUP BY, HAVING','Subqueries & correlated subqueries','Window functions','Views & indexes','Triggers & stored procedures']},
+      {name:'Normalization',tags:['formula','pyq'],time:'3 hrs',
+       subtopics:['Functional dependencies','1NF through BCNF','Lossless decomposition','Dependency preservation','4NF & 5NF']},
+      {name:'Transactions & ACID',tags:['conceptual','important'],time:'2 hrs',
+       subtopics:['ACID properties (deep)','Serializability','Transaction schedules','Recovery algorithms (ARIES)']},
+      {name:'Concurrency Control',tags:['conceptual','pyq'],time:'2 hrs',
+       subtopics:['Lock-based protocols','2PL & strict 2PL','Timestamp ordering','MVCC']},
+      {name:'Indexing & B-Trees',tags:['formula','pyq'],time:'2–3 hrs',
+       subtopics:['Dense vs sparse indexes','B-tree & B+ tree operations','Hash indexing','Query optimization basics']},
+    ]
+  },
+  {
+    id:'networks', name:'Computer Networks', icon:'◎', accent:'#5870d8',
+    desc:'OSI model, TCP, and routing algorithms are perennial favorites. Network security is increasingly tested.',
+    topics:[
+      {name:'OSI & TCP/IP Models',tags:['conceptual','important'],time:'2 hrs',
+       subtopics:['Layer functions & examples','Encapsulation flow','PDU names per layer','Comparison: OSI vs TCP/IP']},
+      {name:'Data Link Layer',tags:['conceptual','pyq'],time:'2 hrs',
+       subtopics:['Framing & error detection (CRC)','CSMA/CD & CSMA/CA','Sliding window protocols','MAC addressing & ARP']},
+      {name:'Routing Algorithms',tags:['formula','pyq'],time:'2–3 hrs',
+       subtopics:['Distance vector (Bellman-Ford)','Link state (Dijkstra/OSPF)','BGP & path-vector','Subnetting & CIDR']},
+      {name:'TCP & UDP',tags:['formula','important'],time:'3 hrs',
+       subtopics:['TCP three-way handshake','Congestion control (Tahoe, Reno, CUBIC)','Flow control & sliding window','UDP use-cases']},
+      {name:'Application Layer',tags:['conceptual'],time:'1.5 hrs',
+       subtopics:['DNS resolution process','HTTP/1.1, HTTP/2, HTTP/3','SMTP & email','FTP & SSH']},
+      {name:'Network Security',tags:['conceptual'],time:'1.5 hrs',
+       subtopics:['Symmetric & asymmetric encryption','TLS/SSL handshake','RSA & Diffie-Hellman','Firewalls & IDS']},
+    ]
+  },
+  {
+    id:'ml', name:'Machine Learning & AI', icon:'◈', accent:'#9060c8',
+    desc:'The highest-weight subject in GATE DA. Requires rigorous mathematical foundations — not just knowing algorithm names.',
+    topics:[
+      {name:'Linear & Logistic Regression',tags:['formula','important','pyq'],time:'3–4 hrs',
+       subtopics:['OLS derivation (matrix form)','Gradient descent variants','MLE interpretation of regression','Logistic regression & cross-entropy','ROC & AUC']},
+      {name:'Decision Trees & Ensembles',tags:['conceptual','pyq'],time:'2–3 hrs',
+       subtopics:['Information gain & Gini impurity','Tree pruning','Random forests (bias-variance)','Gradient boosting & XGBoost','AdaBoost derivation']},
+      {name:'Support Vector Machines',tags:['formula','important'],time:'3 hrs',
+       subtopics:['Maximum margin classifier','Dual formulation & KKT','Kernel trick (RBF, polynomial)','Soft-margin SVM','SVMs vs logistic regression']},
+      {name:'Neural Networks & Deep Learning',tags:['formula','important'],time:'4–5 hrs',
+       subtopics:['Feedforward network & universal approximation','Backpropagation (full derivation)','Activation functions & vanishing gradient','Regularization: dropout, batch norm','CNNs & RNNs (conceptual)']},
+      {name:'Clustering',tags:['formula','pyq'],time:'2 hrs',
+       subtopics:['K-means & convergence','GMM & EM algorithm','Hierarchical clustering','DBSCAN','Cluster quality metrics']},
+      {name:'Dimensionality Reduction',tags:['formula','pyq'],time:'2 hrs',
+       subtopics:['PCA derivation (SVD connection)','LDA vs PCA','t-SNE (conceptual)','Autoencoders (VAE)']},
+      {name:'Bias-Variance & Regularization',tags:['conceptual','important'],time:'2–3 hrs',
+       subtopics:['Bias-variance decomposition proof','Ridge & LASSO geometry','L1 sparsity explanation','Elastic net','Cross-validation strategies']},
+      {name:'Bayesian Methods',tags:['formula'],time:'2 hrs',
+       subtopics:['Naive Bayes derivation','Bayesian parameter estimation','Prior & posterior','MAP vs MLE','Gaussian processes (intro)']},
+    ]
+  }
+];
+
+/* PYQ Data */
+const PYQS = [
+  {year:2026,paper:'DA',topic:'Mathematics',subject:'Probability',marks:2,
+   q:'Let X be a random variable with E[X]=3 and E[X²]=13. What is Var(2X+1)?',
+   hint:'Use Var(aX+b) = a²·Var(X) and Var(X)=E[X²]−(E[X])²'},
+  {year:2026,paper:'CS',topic:'Algorithms',subject:'Dynamic Programming',marks:2,
+   q:'The number of distinct minimum spanning trees of a complete graph K₄ where all edge weights are distinct is:',
+   hint:'Every spanning tree of K₄ has 3 edges. Count using Cayley's formula and uniqueness of MST with distinct weights.'},
+  {year:2026,paper:'DA',topic:'ML',subject:'Machine Learning',marks:1,
+   q:'Which of the following is NOT a property of the kernel function k(x,z) used in SVM?',
+   hint:'A kernel must be symmetric and the Gram matrix must be positive semidefinite (Mercer's condition).'},
+  {year:2025,paper:'CS',topic:'OS',subject:'Operating Systems',marks:2,
+   q:'A system has 4 processes and 3 resource types with instances [3,3,2]. The current allocation is P1:[1,0,0], P2:[0,1,0], P3:[1,1,1], P4:[0,0,0]. Is the system in a safe state?',
+   hint:'Apply Banker\'s algorithm. Compute available = total − Σallocation, then find a safe sequence.'},
+  {year:2025,paper:'DA',topic:'Mathematics',subject:'Linear Algebra',marks:2,
+   q:'The eigenvalues of matrix A are 1, 2, and 3. What is the trace of A²?',
+   hint:'Eigenvalues of A² are squares of eigenvalues of A. Trace = sum of eigenvalues.'},
+  {year:2025,paper:'CS',topic:'DBMS',subject:'DBMS',marks:1,
+   q:'Consider a relation R(A,B,C,D) with FDs: A→B, B→C, C→D, D→A. The minimal candidate keys are:',
+   hint:'Find closure of each attribute. If closure = {A,B,C,D}, it is a candidate key.'},
+  {year:2024,paper:'CS',topic:'Algorithms',subject:'Algorithms',marks:2,
+   q:'T(n) = 3T(n/4) + n·log(n). What is the asymptotic complexity?',
+   hint:'Apply Master theorem Case 3: f(n)=n·log(n), n^(log₄3) ≈ n^0.79. Compare f(n) with n^(log_b a).'},
+  {year:2024,paper:'DA',topic:'ML',subject:'Machine Learning',marks:2,
+   q:'In k-fold cross-validation with k=n (leave-one-out), the bias and variance of the error estimate compared to k=5 are:',
+   hint:'LOOCV has lower bias (trains on n-1 samples) but higher variance (models are highly correlated).'},
+  {year:2024,paper:'CS',topic:'Networks',subject:'Computer Networks',marks:1,
+   q:'In TCP slow start, if the congestion window (cwnd) starts at 1 MSS and ssthresh=8, what is cwnd after round 4?',
+   hint:'Slow start doubles cwnd each round: 1,2,4,8. At round 4 cwnd=8=ssthresh, switch to congestion avoidance.'},
+  {year:2023,paper:'CS',topic:'OS',subject:'Operating Systems',marks:2,
+   q:'Three processes P1, P2, P3 with burst times [6,4,2] arrive at t=0. For Round Robin with quantum=2, calculate average waiting time.',
+   hint:'Simulate: RR order with Q=2. Calculate completion time per process, then waiting = completion − burst − arrival.'},
+  {year:2023,paper:'DA',topic:'Mathematics',subject:'Statistics',marks:2,
+   q:'A MLE estimator for the parameter λ of an Exponential distribution given n i.i.d. samples x₁,...,xₙ is:',
+   hint:'Write log-likelihood for Exp(λ): Σ[log λ − λxᵢ]. Differentiate and set to 0. MLE: λ̂ = n/Σxᵢ = 1/x̄.'},
+  {year:2023,paper:'CS',topic:'DBMS',subject:'DBMS',marks:1,
+   q:'Which normal form does a relation satisfy if every non-trivial FD X→Y has X as a superkey?',
+   hint:'BCNF (Boyce-Codd Normal Form) requires every determinant to be a superkey.'},
+];
+
+/* Formula Sheets Data */
+const FORMULAS = [
+  {
+    subject:'Linear Algebra',
+    items:[
+      {name:'Rank-Nullity',expr:'rank(A) + nullity(A) = n',note:'For A ∈ ℝ^(m×n)'},
+      {name:'Eigenvalue Equation',expr:'det(A − λI) = 0',note:'Characteristic polynomial'},
+      {name:'Trace Property',expr:'tr(A) = Σλᵢ',note:'Sum of eigenvalues = trace'},
+      {name:'Determinant Property',expr:'det(A) = Πλᵢ',note:'Product of eigenvalues = det'},
+      {name:'Matrix Inverse',expr:'A⁻¹ = adj(A)/det(A)',note:'Exists iff det(A) ≠ 0'},
+      {name:'SVD',expr:'A = UΣVᵀ',note:'U,V orthogonal; Σ diagonal (singular values)'},
+    ]
+  },
+  {
+    subject:'Probability & Statistics',
+    items:[
+      {name:'Bayes Theorem',expr:'P(A|B) = P(B|A)·P(A)/P(B)',note:'Foundation of ML inference'},
+      {name:'Expectation',expr:'E[X] = Σ xᵢ·P(X=xᵢ)',note:'Or ∫x·f(x)dx for continuous'},
+      {name:'Variance',expr:'Var(X) = E[X²] − (E[X])²',note:'Var(aX+b) = a²·Var(X)'},
+      {name:'Normal PDF',expr:'f(x) = (1/σ√2π)·exp(−(x−μ)²/2σ²)',note:'68-95-99.7 rule'},
+      {name:'MLE',expr:'θ̂ = argmax Σ log p(xᵢ|θ)',note:'Maximizes log-likelihood'},
+      {name:'Covariance',expr:'Cov(X,Y) = E[XY] − E[X]E[Y]',note:'= 0 if independent (not converse)'},
+    ]
+  },
+  {
+    subject:'Algorithms — Complexity',
+    items:[
+      {name:'Master Theorem',expr:'T(n)=aT(n/b)+f(n)',note:'3 cases based on f(n) vs n^log_b(a)'},
+      {name:'Case 1',expr:'f(n)=O(n^(log_b a − ε)) → Θ(n^log_b a)',note:''},
+      {name:'Case 2',expr:'f(n)=Θ(n^log_b a) → Θ(n^log_b a · log n)',note:''},
+      {name:'Case 3',expr:'f(n)=Ω(n^(log_b a + ε)) → Θ(f(n))',note:'Regularity condition required'},
+      {name:'BFS/DFS',expr:'O(V + E)',note:'Both adjacency list'},
+      {name:'Dijkstra (heap)',expr:'O((V+E) log V)',note:'Non-negative weights only'},
+      {name:'Bellman-Ford',expr:'O(VE)',note:'Handles negative weights, detects negative cycles'},
+      {name:'Floyd-Warshall',expr:'O(V³)',note:'All-pairs shortest paths'},
+    ]
+  },
+  {
+    subject:'Machine Learning',
+    items:[
+      {name:'MSE Loss',expr:'L = (1/n)Σ(yᵢ − ŷᵢ)²',note:'Minimized by OLS'},
+      {name:'Cross-Entropy',expr:'L = −Σ yᵢ log(ŷᵢ)',note:'For classification'},
+      {name:'Gradient Descent',expr:'θ ← θ − η·∇L(θ)',note:'η = learning rate'},
+      {name:'Backprop Chain',expr:'∂L/∂w = ∂L/∂a · ∂a/∂z · ∂z/∂w',note:'Chain rule recursively'},
+      {name:'Bias-Variance',expr:'E[(y−ŷ)²] = Bias² + Variance + Noise',note:'Irreducible error = noise'},
+      {name:'Ridge (L2)',expr:'L + λ‖w‖²',note:'Shrinks all weights, no sparsity'},
+      {name:'LASSO (L1)',expr:'L + λ‖w‖₁',note:'Induces sparsity (feature selection)'},
+      {name:'SVM Margin',expr:'2/‖w‖',note:'Maximize margin ↔ minimize ‖w‖²/2'},
+    ]
+  },
+  {
+    subject:'Operating Systems',
+    items:[
+      {name:'Turnaround Time',expr:'TAT = Completion − Arrival',note:''},
+      {name:'Waiting Time',expr:'WT = TAT − Burst',note:''},
+      {name:'CPU Utilization',expr:'1 − pⁿ',note:'p = I/O fraction, n = processes'},
+      {name:'Page Fault Rate',expr:'EAT = p·page_fault_time + (1−p)·mem_access',note:'Effective Access Time'},
+      {name:'Banker Safe',expr:'Need ≤ Available (for all P)',note:'Check each process in turn'},
+    ]
+  },
+  {
+    subject:'DBMS',
+    items:[
+      {name:'Candidate Key',expr:'Superkey with no redundant attributes',note:'Minimal superkey'},
+      {name:'BCNF',expr:'For every FD X→Y: X is superkey',note:'Stricter than 3NF'},
+      {name:'Lossless Decomp',expr:'R₁ ∩ R₂ → R₁ or R₁ ∩ R₂ → R₂',note:'Armstrong's axioms'},
+      {name:'B-Tree Height',expr:'h ≥ log_{t}((n+1)/2)',note:'t = minimum degree'},
+      {name:'Serial Schedule',expr:'One transaction at a time, in order',note:'Always correct, not efficient'},
+    ]
+  },
+];
+
+/* ════════════════════════════════════════
+   RICH NOTE CONTENT
+════════════════════════════════════════ */
+function getNoteContent(subjectId, topicName) {
+  const key = `${subjectId}::${topicName}`;
+  const notes = {
+
+'maths::Linear Algebra': `# Linear Algebra
+<div class="note-meta"><span class="note-tag">#important</span><span class="note-tag">#formula-heavy</span><span class="note-tag">#pyq-frequent</span></div>
+
+---
+
+## 1. Vector Spaces
+
+A **vector space** $V$ over a field $\\mathbb{F}$ is a set closed under two operations:
+
+- **Vector addition**: $\\mathbf{u} + \\mathbf{v} \\in V$
+- **Scalar multiplication**: $c\\mathbf{v} \\in V$
+
+satisfying 8 axioms (commutativity, associativity, identity, inverse, distributivity).
+
+**Subspace** $W \\subseteq V$ must contain $\\mathbf{0}$, be closed under addition and scalar multiplication.
+
+---
+
+## 2. Linear Independence & Basis
+
+A set $\\{\\mathbf{v}_1, \\ldots, \\mathbf{v}_k\\}$ is **linearly independent** if:
+$$c_1\\mathbf{v}_1 + \\cdots + c_k\\mathbf{v}_k = \\mathbf{0} \\implies c_i = 0 \\; \\forall i$$
+
+A **basis** is a linearly independent spanning set. All bases of a finite-dimensional vector space have the same cardinality — this is the **dimension**.
+
+---
+
+## 3. Rank-Nullity Theorem
+
+For $A \\in \\mathbb{R}^{m \\times n}$:
+
+$$\\boxed{\\text{rank}(A) + \\text{nullity}(A) = n}$$
+
+- $\\text{rank}(A)$: dimension of column space = number of pivot columns
+- $\\text{nullity}(A)$: dimension of null space = number of free variables
+
+<div class="callout tip"><div class="callout-label">⬡ GATE Insight</div><p>For <em>Ax = b</em> to have a unique solution: rank(A) = rank([A|b]) = n. This is the single most tested condition in GATE linear algebra.</p></div>
+
+---
+
+## 4. Eigenvalues & Eigenvectors
+
+$\\lambda$ is an eigenvalue of $A$ if $\\exists$ nonzero $\\mathbf{v}$ s.t. $A\\mathbf{v} = \\lambda\\mathbf{v}$.
+
+**Characteristic equation**: $\\det(A - \\lambda I) = 0$
+
+**Key properties**:
+- $\\text{tr}(A) = \\sum \\lambda_i$
+- $\\det(A) = \\prod \\lambda_i$
+- Eigenvalues of triangular matrix = diagonal entries
+- Symmetric matrices have **real** eigenvalues & **orthogonal** eigenvectors
+
+<div class="callout warn"><div class="callout-label">⚠ Common Exam Trap</div><p>$A$ and $A^T$ have the same eigenvalues. If a GATE question asks you to compute trace/det of $A^k$, use eigenvalue properties: eigenvalues of $A^k$ are $\\lambda_i^k$.</p></div>
+
+---
+
+## 5. Matrix Decompositions
+
+### LU Decomposition
+$A = LU$ (lower × upper triangular). Used for solving linear systems in $O(n^3)$.
+
+### QR Decomposition
+$A = QR$ where $Q$ is orthogonal ($Q^TQ = I$) and $R$ is upper triangular. Basis of Gram-Schmidt.
+
+### Singular Value Decomposition (SVD)
+$$A = U\\Sigma V^T$$
+- $U \\in \\mathbb{R}^{m\\times m}$: left singular vectors (eigenvectors of $AA^T$)
+- $V \\in \\mathbb{R}^{n\\times n}$: right singular vectors (eigenvectors of $A^TA$)  
+- $\\Sigma$: diagonal matrix of singular values $\\sigma_i = \\sqrt{\\lambda_i(A^TA)}$
+
+**Rank from SVD**: rank($A$) = number of nonzero singular values.
+
+---
+
+## 6. GATE-Specific Shortcuts
+
+| Situation | Shortcut |
+|-----------|----------|
+| $A$ is $n\\times n$ with rank $r$ | nullity = $n - r$ |
+| Eigenvalues given | trace = sum, det = product |
+| Find $A^{-1}$ for 2×2 | swap diagonal, negate off-diagonal, divide by det |
+| Check positive definite | all eigenvalues $> 0$, or all leading minors $> 0$ |
+| $AB$ and $BA$ eigenvalues | same nonzero eigenvalues |
+
+<div class="callout insight"><div class="callout-label">💡 Deep Insight</div><p>The rank-nullity theorem is a conservation law: the total "degrees of freedom" in an $n$-column matrix is always $n$. Some go into the image (rank), the rest collapse to zero (nullity).</p></div>
+
+---
+
+## Key Formulas at a Glance
+
+<div class="key-formulas">
+<div class="key-formula"><div class="kf-label">Rank-Nullity</div><div class="kf-value">r + nullity = n</div></div>
+<div class="key-formula"><div class="kf-label">Trace</div><div class="kf-value">tr(A) = Σλᵢ</div></div>
+<div class="key-formula"><div class="kf-label">Determinant</div><div class="kf-value">det(A) = Πλᵢ</div></div>
+<div class="key-formula"><div class="kf-label">SVD</div><div class="kf-value">A = UΣVᵀ</div></div>
+</div>
+`,
+
+'algorithms::Dynamic Programming': `# Dynamic Programming
+<div class="note-meta"><span class="note-tag">#important</span><span class="note-tag">#pyq-frequent</span><span class="note-tag">#conceptual</span></div>
+
+---
+
+## 1. When to Use DP
+
+A problem admits a DP solution iff it has:
+
+1. **Optimal substructure**: optimal solution to the whole problem contains optimal solutions to subproblems
+2. **Overlapping subproblems**: naive recursion solves the same subproblem multiple times
+
+<div class="callout tip"><div class="callout-label">📌 GATE Heuristic</div><p>If the question says "minimum cost", "maximum profit", "number of ways", "longest subsequence" — think DP. If greedy works, prove it (exchange argument). If greedy fails, DP is the answer.</p></div>
+
+---
+
+## 2. Top-Down vs Bottom-Up
+
+### Top-Down (Memoization)
+Start from the full problem, recurse, cache results.
+
+\`\`\`python
+from functools import lru_cache
+
+@lru_cache(maxsize=None)
+def lcs(i, j, s1, s2):
+    if i == 0 or j == 0: return 0
+    if s1[i-1] == s2[j-1]: return 1 + lcs(i-1, j-1, s1, s2)
+    return max(lcs(i-1, j, s1, s2), lcs(i, j-1, s1, s2))
+\`\`\`
+
+### Bottom-Up (Tabulation)
+Fill a table from smallest subproblems up.
+
+\`\`\`python
+def lcs_table(s1, s2):
+    m, n = len(s1), len(s2)
+    dp = [[0]*(n+1) for _ in range(m+1)]
+    for i in range(1, m+1):
+        for j in range(1, n+1):
+            if s1[i-1] == s2[j-1]:
+                dp[i][j] = dp[i-1][j-1] + 1
+            else:
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+    return dp[m][n]  # O(mn) time, O(mn) space
+\`\`\`
+
+---
+
+## 3. Classic Problems & Recurrences
+
+| Problem | DP Definition | Recurrence |
+|---------|--------------|------------|
+| Fibonacci | $F(n)$ = $n$-th Fibonacci | $F(n) = F(n-1) + F(n-2)$ |
+| LCS | $dp[i][j]$ = LCS of $s_1[1..i], s_2[1..j]$ | If match: $dp[i-1][j-1]+1$; else $\\max(dp[i-1][j], dp[i][j-1])$ |
+| 0/1 Knapsack | $dp[i][w]$ = max value with items $1..i$ and capacity $w$ | $\\max(dp[i-1][w], v_i + dp[i-1][w-w_i])$ |
+| Edit Distance | $dp[i][j]$ = min ops to convert $s_1[1..i]$ to $s_2[1..j]$ | $\\min(\\text{insert, delete, replace})$ |
+| LIS | $dp[i]$ = length of LIS ending at index $i$ | $\\max_{j<i, a[j]<a[i]}(dp[j]+1)$ |
+| Matrix Chain | $dp[i][j]$ = min multiplications for matrices $i..j$ | $\\min_k(dp[i][k]+dp[k+1][j]+d_i d_{k+1} d_{j+1})$ |
+
+---
+
+## 4. Space Optimization
+
+Many 2D DP problems can be reduced to $O(n)$ space:
+
+\`\`\`python
+# LCS: O(mn) → O(min(m,n))
+def lcs_optimized(s1, s2):
+    if len(s1) < len(s2): s1, s2 = s2, s1
+    prev = [0] * (len(s2)+1)
+    for c1 in s1:
+        curr = [0] * (len(s2)+1)
+        for j, c2 in enumerate(s2, 1):
+            curr[j] = prev[j-1]+1 if c1==c2 else max(prev[j], curr[j-1])
+        prev = curr
+    return prev[-1]
+\`\`\`
+
+---
+
+## 5. Complexity Reference
+
+<div class="key-formulas">
+<div class="key-formula"><div class="kf-label">LCS</div><div class="kf-value">O(mn) time</div></div>
+<div class="key-formula"><div class="kf-label">Knapsack</div><div class="kf-value">O(nW) time</div></div>
+<div class="key-formula"><div class="kf-label">Edit Dist</div><div class="kf-value">O(mn) time</div></div>
+<div class="key-formula"><div class="kf-label">Matrix Chain</div><div class="kf-value">O(n³) time</div></div>
+</div>
+
+<div class="callout danger"><div class="callout-label">⚠ Watch out</div><p>0/1 Knapsack is <strong>pseudopolynomial</strong> — O(nW) is not polynomial in input size (W can be exponentially large in bits). This is why it is NP-hard.</p></div>
+
+---
+
+## 6. Problem Identification Checklist
+
+Ask yourself in order:
+1. Does the problem ask for an optimum (min/max/count)?
+2. Can I define subproblems with smaller input?
+3. Do subproblems overlap?
+4. Can I express the answer in terms of sub-answers?
+
+If all yes → DP. Define $dp[\\cdot]$ precisely. Write recurrence. Identify base case. Code bottom-up.
+`,
+
+'ml::Neural Networks & Deep Learning': `# Neural Networks & Deep Learning
+<div class="note-meta"><span class="note-tag">#important</span><span class="note-tag">#formula-heavy</span><span class="note-tag">#gate-da-high-weight</span></div>
+
+---
+
+## 1. The Feedforward Network
+
+A network with $L$ layers: input $\\mathbf{x}$, hidden layers $\\mathbf{h}^{(1)}, \\ldots, \\mathbf{h}^{(L-1)}$, output $\\hat{y}$.
+
+**Forward pass** for layer $l$:
+$$\\mathbf{z}^{(l)} = W^{(l)}\\mathbf{a}^{(l-1)} + \\mathbf{b}^{(l)}$$
+$$\\mathbf{a}^{(l)} = \\sigma(\\mathbf{z}^{(l)})$$
+
+where $\\sigma$ is the activation function.
+
+**Universal Approximation Theorem**: A single hidden layer with enough neurons can approximate any continuous function on a compact set — but "enough" can be exponential. Depth helps.
+
+---
+
+## 2. Activation Functions
+
+| Function | Formula | Range | Use | Derivative |
+|----------|---------|-------|-----|------------|
+| Sigmoid | $1/(1+e^{-z})$ | $(0,1)$ | Output (binary) | $\\sigma(1-\\sigma)$ |
+| Tanh | $(e^z-e^{-z})/(e^z+e^{-z})$ | $(-1,1)$ | Hidden | $1-\\tanh^2$ |
+| ReLU | $\\max(0,z)$ | $[0,\\infty)$ | Hidden (default) | $0$ or $1$ |
+| Leaky ReLU | $\\max(\\alpha z, z)$ | $\\mathbb{R}$ | Avoids dying ReLU | $\\alpha$ or $1$ |
+| Softmax | $e^{z_i}/\\sum e^{z_j}$ | $(0,1)$, sum=1 | Output (multiclass) | Jacobian |
+
+<div class="callout danger"><div class="callout-label">Vanishing Gradient Problem</div><p>Sigmoid/tanh saturate: $\\sigma'(z) \\to 0$ for large $|z|$. Backprop multiplies these tiny gradients across $L$ layers → gradients vanish. <strong>Solution</strong>: ReLU, careful initialization (Xavier/He), batch normalization, residual connections.</p></div>
+
+---
+
+## 3. Backpropagation (Full Derivation)
+
+**Loss**: $L = \\mathcal{L}(\\hat{y}, y)$
+
+**Output layer** ($l = L$):
+$$\\delta^{(L)} = \\frac{\\partial L}{\\partial \\mathbf{z}^{(L)}} = \\frac{\\partial L}{\\partial \\mathbf{a}^{(L)}} \\odot \\sigma'(\\mathbf{z}^{(L)})$$
+
+**Hidden layers** (backpropagate):
+$$\\delta^{(l)} = (W^{(l+1)T} \\delta^{(l+1)}) \\odot \\sigma'(\\mathbf{z}^{(l)})$$
+
+**Gradient updates**:
+$$\\frac{\\partial L}{\\partial W^{(l)}} = \\delta^{(l)} (\\mathbf{a}^{(l-1)})^T, \\quad \\frac{\\partial L}{\\partial \\mathbf{b}^{(l)}} = \\delta^{(l)}$$
+
+**Update rule** (SGD):
+$$W^{(l)} \\leftarrow W^{(l)} - \\eta \\frac{\\partial L}{\\partial W^{(l)}}$$
+
+---
+
+## 4. Regularization Techniques
+
+### Dropout
+Randomly zero out neurons with probability $p$ during training. At test time, scale weights by $(1-p)$.
+
+**Why it works**: Prevents co-adaptation; approximates ensemble of $2^n$ networks.
+
+### Batch Normalization
+For each mini-batch, normalize activations: $\\hat{z} = (z - \\mu_B)/\\sigma_B$, then scale: $y = \\gamma\\hat{z} + \\beta$.
+
+**Why it works**: Reduces internal covariate shift; allows higher learning rates; slight regularization effect.
+
+### Weight Initialization
+- **Xavier/Glorot**: $W \\sim \\mathcal{N}(0, 2/(n_{in}+n_{out}))$ — good for sigmoid/tanh
+- **He initialization**: $W \\sim \\mathcal{N}(0, 2/n_{in})$ — good for ReLU
+
+---
+
+## 5. CNNs (Conceptual — GATE DA)
+
+- **Convolution**: slide a filter over input, compute dot products → feature map
+- **Parameter sharing**: same filter weights across all spatial positions → far fewer params than FC
+- **Pooling**: spatial downsampling (max pool, avg pool) → translation invariance
+- **Output size**: $\\lfloor (n + 2p - f)/s \\rfloor + 1$ where $n$ = input, $f$ = filter, $p$ = padding, $s$ = stride
+
+---
+
+## 6. Optimization Algorithms
+
+| Algorithm | Update Rule | Key Property |
+|-----------|-------------|--------------|
+| SGD | $\\theta \\leftarrow \\theta - \\eta g$ | Simple, noisy |
+| Momentum | $v \\leftarrow \\beta v + g; \\theta \\leftarrow \\theta - \\eta v$ | Accelerates convergence |
+| RMSProp | $v \\leftarrow \\beta v + (1-\\beta)g^2; \\theta \\leftarrow \\theta - \\eta g/\\sqrt{v+\\epsilon}$ | Adaptive per-parameter |
+| Adam | Combines Momentum + RMSProp with bias correction | Most widely used |
+
+<div class="callout insight"><div class="callout-label">💡 Key Insight</div><p>Adam is good by default. But for theoretical GATE questions, understand SGD deeply — it's what's analyzed formally. Adam's bias correction term is often tested: $\\hat{m} = m/(1-\\beta_1^t)$.</p></div>
+`,
+
+  };
+
+  if (notes[key]) return notes[key];
+
+  // Generic rich note for topics without specific content
+  const subject = SUBJECTS.find(s => s.id === subjectId);
+  const topic = subject?.topics.find(t => t.name === topicName);
+
+  return `# ${topicName}
+<div class="note-meta"><span class="note-tag">#${subjectId}</span>${(topic?.tags||[]).map(t=>`<span class="note-tag">#${t}</span>`).join('')}</div>
+
+---
+
+## Overview
+
+This topic is part of **${subject?.name}**. These notes cover the core concepts, key formulas, and GATE-specific patterns for **${topicName}**.
+
+<div class="callout tip"><div class="callout-label">📌 How to study this topic</div><p>Read through once for the mental model. Then close the notes and attempt at least 3 practice problems from memory. Return to review gaps.</p></div>
+
+---
+
+## Core Concepts
+
+${(topic?.subtopics||['Core theory','Applications','GATE patterns']).map((s,i) => `### ${i+1}. ${s}
+
+This section covers the key ideas related to **${s}**. Refer to your textbook for the full derivation, and use these notes as a structured revision aid.
+
+`).join('')}
+
+---
+
+## GATE Patterns for ${topicName}
+
+- Questions typically test edge cases and properties, not just definitions
+- Know the complexity / time bounds where applicable
+- Be comfortable deriving results, not just recalling them
+
+<div class="callout warn"><div class="callout-label">⚠ Common Mistakes</div><p>Always check the exact conditions in definitions. GATE setters deliberately test boundary cases.</p></div>
+
+---
+
+## Key Takeaways
+
+> **${topicName}** is examined across multiple dimensions in GATE. Understand the fundamentals deeply, practice problems from at least 3 different years of PYQs.
+`;
+}
+
+/* ════════════════════════════════════════
+   STATE
+════════════════════════════════════════ */
+let currentFilter = 'all';
+let currentPyqFilter = 'all';
+let bookmarks = JSON.parse(localStorage.getItem('gate_bookmarks') || '[]');
+let noteFontSize = 16;
+let timerInterval = null;
+let timerSeconds = 25 * 60;
+let timerRunning = false;
+let pomodoroCount = 1;
+
+/* ════════════════════════════════════════
+   THEME
+════════════════════════════════════════ */
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('theme-btn').textContent = isDark ? '☀' : '☾';
+  localStorage.setItem('gate_theme', isDark ? 'light' : 'dark');
+}
+
+(function initTheme() {
+  const t = localStorage.getItem('gate_theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('theme-btn').textContent = t === 'dark' ? '☾' : '☀';
+})();
+
+/* ════════════════════════════════════════
+   NAVIGATION
+════════════════════════════════════════ */
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  const el = document.getElementById('nav-' + id);
+  if (el) el.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (id === 'subjects') renderSubjectsPage();
+  if (id === 'formulas') renderFormulas();
+  if (id === 'pyq') renderPyq();
+  if (id === 'home') renderHomeGrid();
+  history.replaceState(null, '', '#' + id);
+}
+
+function toggleMenu() {
+  document.getElementById('mobile-menu').classList.toggle('open');
+}
+
+/* ════════════════════════════════════════
+   RENDER HOME GRID
+════════════════════════════════════════ */
+function renderHomeGrid() {
+  const grid = document.getElementById('home-subjects-grid');
+  if (!grid) return;
+  grid.innerHTML = SUBJECTS.map(s => `
+    <div class="subject-card" style="--card-accent:${s.accent}"
+         onclick="openSubject('${s.id}')">
+      <div class="card-accent-bar"></div>
+      <div class="card-icon">${s.icon}</div>
+      <div class="card-title">${s.name}</div>
+      <div class="card-desc">${s.desc}</div>
+      <div class="card-topics">${s.topics.slice(0,4).map(t=>`<span class="card-topic-tag">${t.name}</span>`).join('')}${s.topics.length > 4 ? `<span class="card-topic-tag">+${s.topics.length-4} more</span>` : ''}</div>
+    </div>`).join('');
+}
+
+/* ════════════════════════════════════════
+   RENDER SUBJECTS PAGE
+════════════════════════════════════════ */
+function renderSubjectsPage() {
+  const container = document.getElementById('subjects-full-list');
+  if (!container) return;
+  container.innerHTML = SUBJECTS.map(s => `
+    <div class="subject-section expanded" id="ss-${s.id}"
+         style="--ssh-color:${s.accent}">
+      <div class="subject-section-hdr" onclick="toggleSubjectSection('${s.id}')">
+        <div class="ssh-left">
+          <div class="ssh-icon" style="color:${s.accent}">${s.icon}</div>
+          <div>
+            <div class="ssh-title">${s.name}</div>
+            <div class="ssh-sub">${s.topics.length} topics · ${s.topics.reduce((a,t)=>a+(parseInt(t.time)||2),0)}+ hours</div>
+          </div>
+        </div>
+        <div class="ssh-right">
+          <span class="ssh-count">${s.topics.filter(t=>t.tags.includes('important')).length} high priority</span>
+          <span class="ssh-chevron">▾</span>
+        </div>
+      </div>
+      <div class="topics-grid">
+        ${s.topics.map(t => `
+          <div class="topic-card" data-tags="${t.tags.join(',')}"
+               onclick="openNote('${s.id}','${t.name}','${s.name}')">
+            <div class="tc-left">
+              <div class="tc-name">${t.name}</div>
+              <div class="tc-tags">
+                ${t.tags.map(tg => `<span class="tc-tag ${tg==='pyq'?'pyq':tg==='important'?'important':''}">${tg==='pyq'?'PYQ':tg==='important'?'★ Key':tg}</span>`).join('')}
+              </div>
+            </div>
+            <div class="tc-right">${t.time}</div>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function toggleSubjectSection(id) {
+  document.getElementById('ss-' + id).classList.toggle('expanded');
+}
+
+function filterTopics() {
+  const q = document.getElementById('topic-search')?.value?.toLowerCase() || '';
+  document.querySelectorAll('.topic-card').forEach(card => {
+    const name = card.querySelector('.tc-name')?.textContent?.toLowerCase() || '';
+    const tags = card.dataset.tags || '';
+    const matchQ = !q || name.includes(q);
+    const matchF = currentFilter === 'all' || tags.includes(currentFilter);
+    card.style.display = matchQ && matchF ? '' : 'none';
+  });
+}
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filt-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterTopics();
+}
+
+/* ════════════════════════════════════════
+   NOTE VIEWER
+════════════════════════════════════════ */
+function openSubject(id) {
+  const subject = SUBJECTS.find(s => s.id === id);
+  if (!subject) return;
+  openNote(id, subject.topics[0].name, subject.name);
+}
+
+function openNote(subjectId, topicName, subjectName) {
+  showPage('notes');
+
+  // Set breadcrumb
+  document.getElementById('bc-subject').textContent = subjectName;
+  document.getElementById('bc-topic').textContent = topicName;
+  document.getElementById('sidebar-subject-name').textContent = subjectName;
+
+  // Render sidebar
+  const subject = SUBJECTS.find(s => s.id === subjectId);
+  if (subject) {
+    const sidebarContent = document.getElementById('sidebar-content');
+    sidebarContent.innerHTML = `
+      <div class="sidebar-section-label">Topics</div>
+      ${subject.topics.map(t => `
+        <div class="sidebar-item ${t.name===topicName?'active':''}"
+             onclick="openNote('${subjectId}','${t.name}','${subjectName}')">
+          ${t.name}
+        </div>`).join('')}
+    `;
+  }
+
+  // Bookmark state
+  const bKey = `${subjectId}::${topicName}`;
+  const isBookmarked = bookmarks.includes(bKey);
+  const btn = document.getElementById('bookmark-btn');
+  if (btn) {
+    btn.textContent = isBookmarked ? '★ Bookmarked' : '☆ Bookmark';
+    btn.classList.toggle('active', isBookmarked);
+  }
+
+  // Render content
+  const content = document.getElementById('note-content');
+  content.style.fontSize = noteFontSize + 'px';
+  content.innerHTML = renderMarkdown(getNoteContent(subjectId, topicName));
+
+  // Trigger MathJax
+  if (window.MathJax && window.MathJax.typesetPromise) {
+    window.MathJax.typesetPromise([content]).catch(console.error);
+  }
+
+  // Reading progress
+  updateReadProgress();
+}
+
+function renderMarkdown(md) {
+  // Simple markdown-to-HTML
+  let html = md
+    .replace(/^#### (.+)$/gm, '<h4>$1</h4>')
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/^---$/gm, '<hr/>')
+    .replace(/^\> (.+)$/gm, '<blockquote><p>$1</p></blockquote>')
+    .replace(/\$\$([^$]+)\$\$/g, '<div class="formula-block">\\[$1\\]</div>')
+    .replace(/^- (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>\n?)+/g, m => `<ul>${m}</ul>`);
+
+  // Code blocks
+  html = html.replace(/```(\w*)\n([\s\S]+?)```/g, (_, lang, code) =>
+    `<pre><code class="lang-${lang}">${escapeHtml(code.trim())}</code></pre>`);
+
+  // Tables
+  html = html.replace(/\|(.+)\|\n\|[-|: ]+\|\n((?:\|.+\|\n?)+)/g, (_, header, rows) => {
+    const ths = header.split('|').filter(c=>c.trim()).map(c=>`<th>${c.trim()}</th>`).join('');
+    const trs = rows.trim().split('\n').map(row => {
+      const tds = row.split('|').filter(c=>c.trim()).map(c=>`<td>${c.trim()}</td>`).join('');
+      return `<tr>${tds}</tr>`;
+    }).join('');
+    return `<table><thead><tr>${ths}</tr></thead><tbody>${trs}</tbody></table>`;
+  });
+
+  // Paragraphs
+  html = html.replace(/^([^<\n].+)$/gm, '<p>$1</p>');
+  html = html.replace(/<p><\/p>/g, '');
+
+  return html;
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ════════════════════════════════════════
+   BOOKMARK & TOOLBAR
+════════════════════════════════════════ */
+function toggleBookmark() {
+  const key = `${document.getElementById('bc-subject').textContent}::${document.getElementById('bc-topic').textContent}`;
+  const idx = bookmarks.indexOf(key);
+  if (idx >= 0) {
+    bookmarks.splice(idx, 1);
+  } else {
+    bookmarks.push(key);
+  }
+  localStorage.setItem('gate_bookmarks', JSON.stringify(bookmarks));
+  const btn = document.getElementById('bookmark-btn');
+  const isNowBookmarked = bookmarks.includes(key);
+  btn.textContent = isNowBookmarked ? '★ Bookmarked' : '☆ Bookmark';
+  btn.classList.toggle('active', isNowBookmarked);
+}
+
+function increaseFontSize() {
+  noteFontSize = Math.min(22, noteFontSize + 1);
+  document.getElementById('note-content').style.fontSize = noteFontSize + 'px';
+}
+function decreaseFontSize() {
+  noteFontSize = Math.max(13, noteFontSize - 1);
+  document.getElementById('note-content').style.fontSize = noteFontSize + 'px';
+}
+
+function updateReadProgress() {
+  const el = document.querySelector('.viewer-main');
+  if (!el) return;
+  const pct = Math.min(100, Math.round((window.scrollY / (el.scrollHeight - window.innerHeight + 100)) * 100));
+  document.getElementById('read-progress-fill').style.width = pct + '%';
+  document.getElementById('read-progress-label').textContent = pct + '%';
+  document.getElementById('progress-bar').style.width = pct + '%';
+}
+window.addEventListener('scroll', updateReadProgress);
+
+/* ════════════════════════════════════════
+   FORMULA SHEETS
+════════════════════════════════════════ */
+function renderFormulas() {
+  const container = document.getElementById('formula-content');
+  if (!container) return;
+  container.innerHTML = FORMULAS.map(section => `
+    <div class="formula-section">
+      <h3>${section.subject}</h3>
+      <div class="formula-list">
+        ${section.items.map(f => `
+          <div class="formula-item">
+            <div class="fi-name">${f.name}</div>
+            <div class="fi-expr">\\(${f.expr.replace(/→/g,'\\to').replace(/≠/g,'\\neq').replace(/≤/g,'\\leq').replace(/≥/g,'\\geq').replace(/Σ/g,'\\Sigma').replace(/Π/g,'\\Pi')}\\)</div>
+            ${f.note ? `<div class="fi-note">${f.note}</div>` : ''}
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+  if (window.MathJax?.typesetPromise) {
+    window.MathJax.typesetPromise([container]).catch(console.error);
+  }
+}
+
+/* ════════════════════════════════════════
+   PYQ
+════════════════════════════════════════ */
+function renderPyq() {
+  renderPyqGrid();
+}
+function setPyqFilter(f, btn) {
+  currentPyqFilter = f;
+  document.querySelectorAll('#pyq-filter-row .filt-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPyqGrid();
+}
+function renderPyqGrid() {
+  const grid = document.getElementById('pyq-grid');
+  if (!grid) return;
+  const filtered = PYQS.filter(q => {
+    if (currentPyqFilter === 'all') return true;
+    return q.paper === currentPyqFilter || q.topic === currentPyqFilter || q.subject === currentPyqFilter;
+  });
+  grid.innerHTML = filtered.map(q => `
+    <div class="pyq-card" onclick="expandPyq(this)">
+      <div class="pyq-meta">
+        <span class="pyq-year">GATE ${q.year}</span>
+        <span class="pyq-paper">${q.paper}</span>
+      </div>
+      <div class="pyq-q">${q.q}</div>
+      <div class="pyq-footer">
+        <span class="pyq-topic">${q.topic}</span>
+        <span class="pyq-marks">${q.marks} Mark${q.marks>1?'s':''}</span>
+      </div>
+      <div class="pyq-hint" style="display:none;margin-top:14px;padding:12px 16px;background:var(--bg3);border-radius:var(--radius-sm);font-size:.82rem;color:var(--text2);line-height:1.6;border-left:3px solid var(--amber)">
+        <strong style="color:var(--amber);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase">Hint / Approach</strong><br/>${q.hint}
+      </div>
+    </div>`).join('');
+}
+function expandPyq(el) {
+  const hint = el.querySelector('.pyq-hint');
+  hint.style.display = hint.style.display === 'none' ? 'block' : 'none';
+}
+
+/* ════════════════════════════════════════
+   SEARCH
+════════════════════════════════════════ */
+function openSearch() {
+  document.getElementById('search-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('search-input')?.focus(), 50);
+}
+function closeSearch(e) {
+  document.getElementById('search-overlay').classList.remove('open');
+  document.getElementById('search-input').value = '';
+  document.getElementById('search-results').innerHTML = '<div class="search-empty">Type to search across all 60+ topics</div>';
+}
+function runSearch(q) {
+  const results = document.getElementById('search-results');
+  if (!q.trim()) {
+    results.innerHTML = '<div class="search-empty">Type to search across all 60+ topics</div>';
+    return;
+  }
+  const qLow = q.toLowerCase();
+  const hits = [];
+  SUBJECTS.forEach(s => {
+    s.topics.forEach(t => {
+      if (t.name.toLowerCase().includes(qLow) || s.name.toLowerCase().includes(qLow) ||
+          (t.subtopics||[]).some(sub => sub.toLowerCase().includes(qLow))) {
+        hits.push({subject:s, topic:t});
+      }
+    });
+  });
+  if (!hits.length) {
+    results.innerHTML = '<div class="search-empty">No results found</div>';
+    return;
+  }
+  results.innerHTML = hits.slice(0,10).map(h => `
+    <div class="search-result-item"
+         onclick="closeSearch();openNote('${h.subject.id}','${h.topic.name}','${h.subject.name}')">
+      <div class="sri-icon">${h.subject.icon}</div>
+      <div>
+        <div class="sri-name">${h.topic.name}</div>
+        <div class="sri-sub">${h.subject.name} · ${h.topic.time}</div>
+      </div>
+    </div>`).join('');
+}
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
+  if (e.key === 'Escape') closeSearch();
+});
+
+/* ════════════════════════════════════════
+   STUDY TIMER (Pomodoro)
+════════════════════════════════════════ */
+function toggleTimer() {
+  const widget = document.getElementById('timer-widget');
+  const fab = document.getElementById('timer-fab');
+  widget.classList.toggle('visible');
+  fab.style.display = widget.classList.contains('visible') ? 'none' : 'flex';
+}
+function timerStart() {
+  if (timerRunning) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    document.getElementById('timer-start-btn').textContent = 'Resume';
+    return;
+  }
+  timerRunning = true;
+  document.getElementById('timer-start-btn').textContent = 'Pause';
+  timerInterval = setInterval(() => {
+    timerSeconds--;
+    updateTimerDisplay();
+    if (timerSeconds <= 0) {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      pomodoroCount++;
+      timerSeconds = pomodoroCount % 4 === 0 ? 15*60 : 25*60;
+      document.getElementById('timer-session-count').textContent =
+        `Session ${pomodoroCount} · ${pomodoroCount % 4 === 0 ? 'Long break' : 'Pomodoro'}`;
+      document.getElementById('timer-start-btn').textContent = 'Start';
+      updateTimerDisplay();
+    }
+  }, 1000);
+}
+function timerReset() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerSeconds = 25*60;
+  pomodoroCount = 1;
+  document.getElementById('timer-start-btn').textContent = 'Start';
+  document.getElementById('timer-session-count').textContent = 'Session 1 · Pomodoro';
+  updateTimerDisplay();
+}
+function updateTimerDisplay() {
+  const m = Math.floor(timerSeconds/60).toString().padStart(2,'0');
+  const s = (timerSeconds%60).toString().padStart(2,'0');
+  document.getElementById('timer-display').textContent = `${m}:${s}`;
+}
+
+/* ════════════════════════════════════════
+   INIT
+════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  renderHomeGrid();
+
+  // Handle hash navigation
+  const hash = window.location.hash.replace('#','');
+  if (['subjects','formulas','pyq','about'].includes(hash)) showPage(hash);
+});
+</script>
+</body>
+</html>
