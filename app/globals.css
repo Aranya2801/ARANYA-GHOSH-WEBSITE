@@ -1,0 +1,257 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design tokens (space-separated RGB so Tailwind can apply alpha) ── */
+:root,
+[data-theme='dark'] {
+  --bg: 6 6 10;
+  --bg2: 12 12 20;
+  --bg3: 20 20 33;
+  --ink: 226 226 240;
+  --strong: 255 255 255;
+  --muted: 140 140 172;
+  --line: 255 255 255;
+
+  --gold: 245 200 66;
+  --amber: 232 135 74;
+  --rose: 224 107 117;
+  --cyan: 56 217 245;
+  --blue: 104 160 255;
+  --ice: 168 216 234;
+  --violet: 165 125 255;
+  --green: 57 229 160;
+  --lavender: 196 181 253;
+
+  color-scheme: dark;
+}
+
+[data-theme='light'] {
+  --bg: 250 249 246;
+  --bg2: 255 255 255;
+  --bg3: 241 239 233;
+  --ink: 38 38 52;
+  --strong: 12 12 20;
+  --muted: 98 98 120;
+  --line: 0 0 0;
+
+  /* darker accents so text keeps ≥4.5:1 contrast on the light background */
+  --gold: 138 98 0;
+  --amber: 176 80 20;
+  --rose: 190 40 60;
+  --cyan: 0 112 140;
+  --blue: 30 80 200;
+  --ice: 40 100 130;
+  --violet: 100 60 210;
+  --green: 0 128 84;
+  --lavender: 90 70 170;
+
+  color-scheme: light;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-bg font-sans text-ink antialiased;
+    overflow-x: hidden;
+  }
+  ::selection {
+    background: rgb(var(--green) / 0.25);
+    color: rgb(var(--strong));
+  }
+  :focus-visible {
+    outline: 2px solid rgb(var(--green) / 0.7);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* Film-grain overlay — dark theme only */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.3;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+[data-theme='light'] .noise-overlay {
+  display: none;
+}
+
+/* Section grid backdrops */
+.bg-grid {
+  background-image:
+    linear-gradient(rgb(var(--line) / 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--line) / 0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.text-gradient-diary {
+  background: linear-gradient(135deg, rgb(var(--gold)), rgb(var(--amber)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.text-gradient-pro {
+  background: linear-gradient(135deg, rgb(var(--cyan)), rgb(var(--blue)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.text-gradient-research {
+  background: linear-gradient(135deg, rgb(var(--violet)), rgb(var(--green)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: 'JetBrains Mono Variable', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgb(var(--line) / 0.1);
+}
+
+/* ── Markdown article typography ── */
+.prose-aranya {
+  font-size: 1.0625rem;
+  line-height: 1.85;
+  color: rgb(var(--ink));
+  max-width: 68ch;
+}
+.prose-aranya > * + * {
+  margin-top: 1.25em;
+}
+.prose-aranya h2 {
+  font-family: 'Playfair Display Variable', Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: rgb(var(--strong));
+  margin-top: 2.2em;
+}
+.prose-aranya h3 {
+  font-family: 'Playfair Display Variable', Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: rgb(var(--strong));
+  margin-top: 1.8em;
+}
+.prose-aranya a {
+  color: rgb(var(--green));
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose-aranya strong {
+  color: rgb(var(--strong));
+}
+.prose-aranya ul,
+.prose-aranya ol {
+  padding-left: 1.4em;
+}
+.prose-aranya ul {
+  list-style: disc;
+}
+.prose-aranya ol {
+  list-style: decimal;
+}
+.prose-aranya li + li {
+  margin-top: 0.4em;
+}
+.prose-aranya blockquote {
+  border-left: 2px solid rgb(var(--green));
+  padding-left: 1.1em;
+  color: rgb(var(--muted));
+  font-style: italic;
+}
+.prose-aranya code {
+  font-family: 'JetBrains Mono Variable', ui-monospace, monospace;
+  font-size: 0.88em;
+  background: rgb(var(--line) / 0.08);
+  padding: 0.15em 0.4em;
+}
+.prose-aranya pre {
+  background: rgb(var(--bg3));
+  border: 1px solid rgb(var(--line) / 0.12);
+  padding: 1rem 1.2rem;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+.prose-aranya pre code {
+  background: none;
+  padding: 0;
+}
+.prose-aranya hr {
+  border-color: rgb(var(--line) / 0.12);
+}
+.prose-aranya img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid rgb(var(--line) / 0.12);
+}
+.prose-aranya table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+.prose-aranya th,
+.prose-aranya td {
+  border: 1px solid rgb(var(--line) / 0.15);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+.prose-aranya th {
+  color: rgb(var(--strong));
+  background: rgb(var(--line) / 0.05);
+}
+
+/* ── Print: the /professional page doubles as a clean PDF résumé ── */
+@media print {
+  :root,
+  [data-theme='dark'] {
+    --bg: 255 255 255;
+    --bg2: 255 255 255;
+    --bg3: 245 245 245;
+    --ink: 30 30 40;
+    --strong: 0 0 0;
+    --muted: 90 90 105;
+    --line: 0 0 0;
+    --cyan: 0 100 125;
+    --green: 0 110 72;
+    --gold: 120 84 0;
+  }
+  .no-print,
+  .noise-overlay,
+  canvas {
+    display: none !important;
+  }
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+  body {
+    background: #fff !important;
+  }
+  section,
+  .break-inside-avoid {
+    break-inside: avoid;
+  }
+}
