@@ -18,7 +18,7 @@ export default function DiaryPage() {
 
   return (
     <>
-      <PageHero accent="gold" eyebrow="// virtual diary" title={<>The <span className="text-gradient-diary italic">diary</span></>} subtitle="School, college, hobbies and day-to-day notes." />
+      <PageHero accent="gold" eyebrow="diary" title={<>The <span className="text-gradient-diary italic">diary</span></>} subtitle="School, college, photos and whatever else." />
 
       <div className="mx-auto max-w-6xl space-y-20 px-6 py-16 md:px-12">
         <section>
@@ -27,7 +27,7 @@ export default function DiaryPage() {
           <EntryList
             entries={entries}
             accent="gold"
-            emptyMessage={<>No entries yet. Add a Markdown file to <code>content/diary/</code> (or run <code>npm run new:diary</code>) and it appears here.</>}
+            emptyMessage={<>Nothing here yet.</>}
           />
         </section>
 
@@ -55,7 +55,7 @@ export default function DiaryPage() {
             <Gallery photos={photos} categories={categories} />
           ) : (
             <EmptyState>
-              No photos yet. Drop images into <code>public/photos/school</code>, <code>college</code> or <code>life</code> and redeploy — they show up here with a lightbox.
+              Photos coming soon.
             </EmptyState>
           )}
         </section>

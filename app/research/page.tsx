@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function ResearchPage() {
   return (
     <>
-      <PageHero accent="violet" eyebrow="// research" title={<>Research <span className="text-gradient-research italic">life</span></>} subtitle="Three research internships, one peer-reviewed paper, and a PhD in AI/ML as the long-term goal." />
+      <PageHero accent="violet" eyebrow="research" title={<>Research <span className="text-gradient-research italic">life</span></>} subtitle="Three research internships, one paper, and a PhD in AI/ML as the goal." />
 
       <div className="mx-auto max-w-5xl space-y-20 px-6 py-16 md:px-12">
         <section>

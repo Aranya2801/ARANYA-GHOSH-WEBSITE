@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function ProfessionalPage() {
   return (
     <>
-      <PageHero accent="cyan" eyebrow="// virtual résumé" title={<>Pro<span className="text-gradient-pro italic">fessional</span></>} subtitle="Education, research, projects and skills — one page, always current.">
+      <PageHero accent="cyan" eyebrow="résumé" title={<>Pro<span className="text-gradient-pro italic">fessional</span></>} subtitle="Education, research, projects, skills.">
         <div className="mt-6 flex flex-wrap items-center gap-4 font-mono text-[11px]">
           <PrintButton />
           <a className="text-muted hover:text-strong" href={`mailto:${SITE.email}`}>{SITE.email}</a>
