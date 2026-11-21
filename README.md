@@ -1,16 +1,64 @@
-# aranyaghosh.org
+<div align="center">
 
-Source code for the personal website of **Aranya Ghosh** — [aranyaghosh.org](https://aranyaghosh.org).
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=ARANYA%20GHOSH&fontSize=60&fontColor=fff&animation=twinkling&fontAlignY=35&desc=aranyaghosh.org&descAlignY=58&descSize=18" width="100%"/>
 
-The site has four sections:
+<br/>
 
-| Route | Purpose |
-| --- | --- |
-| `/` | Landing page with links to each section and the latest writing |
-| `/diary` | Journal entries, life timeline, photo gallery, hobbies, optional favourites |
-| `/professional` | Résumé: education, exam ranks, experience, projects, skills, certifications, live GitHub activity, contact form |
-| `/research` | Research internships, publication and research interests |
-| `/blog` | Technical posts written in Markdown, with an RSS feed |
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=JetBrains+Mono&size=18&duration=3000&pause=800&color=39E5A0&center=true&vCenter=true&multiline=true&repeat=true&width=700&height=80&lines=GATE+2026+AIR+3+%E2%80%94+Data+Science+%26+AI;MS-MITA+%40+Rutgers+Business+School+%7C+Fall+2026;ML+Researcher+%7C+IIT-KGP+%26+IIIT-N+Alum)](https://git.io/typing-svg)
+
+<br/>
+
+<p>
+  <a href="https://aranyaghosh.org"><img src="https://img.shields.io/badge/🌐_Live_Site-aranyaghosh.org-39e5a0?style=for-the-badge&labelColor=06060a" /></a>
+  <a href="https://github.com/Aranya2801/ARANYA-GHOSH-WEBSITE/stargazers"><img src="https://img.shields.io/github/stars/Aranya2801/ARANYA-GHOSH-WEBSITE?style=for-the-badge&logo=github&color=f5c842&labelColor=06060a" /></a>
+  <a href="https://github.com/Aranya2801/ARANYA-GHOSH-WEBSITE/commits/main"><img src="https://img.shields.io/github/last-commit/Aranya2801/ARANYA-GHOSH-WEBSITE?style=for-the-badge&color=9b6dff&labelColor=06060a" /></a>
+  <img src="https://img.shields.io/badge/Next.js-14-white?style=for-the-badge&logo=nextdotjs&labelColor=06060a" />
+  <img src="https://img.shields.io/badge/TypeScript-5-3178c6?style=for-the-badge&logo=typescript&labelColor=06060a" />
+  <img src="https://img.shields.io/badge/Deployed-Vercel-white?style=for-the-badge&logo=vercel&labelColor=06060a" />
+</p>
+
+<br/>
+
+> *"AI is the most transformative technology of our time — I want to be at its frontier, not just as a user, but as a builder and discoverer."*
+
+</div>
+
+---
+
+Source code for the personal website of **Aranya Ghosh**: a résumé, research page, photo diary and blog.
+
+## 🌌 Four sections, one site
+
+<table>
+<tr>
+<td width="25%" align="center">
+<h3>📔 Diary</h3>
+<p><em>The human behind the engineer</em></p>
+<p>Journal · life timeline · photos · hobbies · vlogs</p>
+<img src="https://img.shields.io/badge/Accent-Gold-f5c842?style=flat-square&labelColor=06060a"/>
+</td>
+<td width="25%" align="center">
+<h3>💼 Professional</h3>
+<p><em>The résumé, live</em></p>
+<p>Education · experience · projects · skills · certifications · GitHub activity</p>
+<img src="https://img.shields.io/badge/Accent-Cyan-38d9f5?style=flat-square&labelColor=06060a"/>
+</td>
+<td width="25%" align="center">
+<h3>🔬 Research</h3>
+<p><em>What I'm curious about</em></p>
+<p>Published paper · IIT-KGP &amp; IIIT-N internships · interests</p>
+<img src="https://img.shields.io/badge/Accent-Violet-9b6dff?style=flat-square&labelColor=06060a"/>
+</td>
+<td width="25%" align="center">
+<h3>✍️ Blog</h3>
+<p><em>Notes and write-ups</em></p>
+<p>Markdown posts · tag filter · RSS</p>
+<img src="https://img.shields.io/badge/Accent-Green-39e5a0?style=flat-square&labelColor=06060a"/>
+</td>
+</tr>
+</table>
+
+---
 
 ## Contents
 
@@ -343,10 +391,46 @@ Make sure the full class name appears literally in a source file, and that opaci
 **Theme flashes on load.**
 Do not remove the inline script in `app/layout.tsx`; it sets the theme before the first paint.
 
+## 👨‍💻 About me
+
+<div align="center">
+
+| | |
+|:---|:---|
+| 🎓 **Education** | MS-MITA @ Rutgers Business School (Fall 2026) |
+| 🏆 **GATE 2026** | AIR 3 — Data Science & AI |
+| 🏆 **GATE 2026** | AIR 147 — CS & IT |
+| 📄 **Research** | Peer-reviewed paper (IIIT Nagpur) |
+| 🏛️ **Internships** | IIT Kharagpur · IIIT Nagpur · KIIT |
+| 🎖️ **Award** | Best Research Initiative — KIIT DU |
+| 💻 **Stack** | Python · TensorFlow · PyTorch · React · AWS |
+| 🎯 **Goal** | PhD in AI/ML |
+
+</div>
+
+## 📬 Connect
+
+<div align="center">
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=06060a)](https://www.linkedin.com/in/aranya-ghosh-754188207/)
+[![GitHub](https://img.shields.io/badge/GitHub-Follow-white?style=for-the-badge&logo=github&labelColor=06060a)](https://github.com/Aranya2801)
+[![Email](https://img.shields.io/badge/Email-Contact-39e5a0?style=for-the-badge&logo=gmail&logoColor=white&labelColor=06060a)](mailto:aranyaghoshriku2801@gmail.com)
+[![Website](https://img.shields.io/badge/Website-Visit-f5c842?style=for-the-badge&logo=googlechrome&logoColor=black&labelColor=06060a)](https://aranyaghosh.org)
+
+</div>
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
 
-## Contact
+---
 
-Aranya Ghosh · [aranyaghoshriku2801@gmail.com](mailto:aranyaghoshriku2801@gmail.com) · [LinkedIn](https://www.linkedin.com/in/aranya-ghosh-754188207/) · [GitHub](https://github.com/Aranya2801)
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=100&section=footer&animation=twinkling" width="100%"/>
+
+**Built with 🧠 intelligence, ☕ caffeine, and a PhD dream**
+
+*GATE 2026 AIR 3 · MS-MITA @ Rutgers · aranyaghosh.org*
+
+</div>
